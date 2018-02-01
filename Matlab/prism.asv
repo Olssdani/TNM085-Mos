@@ -63,9 +63,8 @@ for a = X
             Y_out(index) = Y;              
             % Kollar om strålen är i mediumet eller inte
             if first
-                angle_in = acosd(dot(ljus, norm1)/(norm(ljus)*norm(norm1)))
+                angle_in = acosd(dot(ljus, norm1)/(norm(ljus)*norm(norm1)));
                 [K, M, angle_out] = line_ekv(angle_in, Y, a, n1, n2);
-                angle_out
                 first = false;
             end
             
@@ -73,16 +72,15 @@ for a = X
             
             Wall1 = false;
         elseif Wall2 && abs(Y - Y2) < 0.02
-            % adderar talet till vektorn
             Y_out(index) = Y;
-            
-           
+            angle_in = acosd(dot(ljus, norm2)/(norm(ljus)*norm(norm2)));
+            if angle_in > 90
+                angle_in = 180 -angle_in;
+            end
 
             % Kollar om strålen är i mediumet eller inte
             if first
-                angle_in = acosd(dot(ljus, norm2)/(norm(ljus)*norm(norm2)))
-                [K, M, angle_out] = line_ekv(angle_in, Y, a, n1, n2);
-                angle_out
+                [K, M] = line_ekv(angle_in, Y, a, n1, n2);
                 first = false;
             end
             ljus =[1, K];
@@ -90,12 +88,15 @@ for a = X
         elseif Wall3 && abs(Y - Y3) < 0.02
             % adderar talet
             Y_out(index) = Y;
-            
+            % Hittar vinkeln
+            angle_in = acosd(dot(ljus, norm3)/(norm(ljus)*norm(norm3)));
+            if angle_in > 90
+                angle_in = 180 -angle_in;
+            end
+
             % Kollar om strålen är i mediumet eller inte
             if first
-                angle_in = acosd(dot(ljus, norm3)/(norm(ljus)*norm(norm3)))
                 [K, M, angle_out] = line_ekv(angle_in, Y, a, n1, n2);
-                angle_out
                 first = false;
             end
             ljus =[1, K];
