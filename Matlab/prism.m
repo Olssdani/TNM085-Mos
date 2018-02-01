@@ -31,13 +31,13 @@ M_3 =prisma(2,3)-K_3*prisma(1,3);
 ljus = [1,0];
 
 % Första väggens normalen
-norm1 = [K_1,1]
+norm1 = [K_1,1];
 
 % Första väggens normalen
-norm2 = [K_2, 1]
+norm2 = [K_2, 1];
 
 % Första väggens normalen
-norm3 = [K_3, 1]
+norm3 = [K_3, 1];
 
 %% Brytningsloopen
 % Denna söker efter vilket vägg som strålen prickar och sedan plockar
@@ -78,7 +78,7 @@ for a = X
                 [K, M, angle_out] = line_ekv(angle_in, Y, a, n2, n1);
             end
             
-            ljus =[1, K]
+            ljus =[1, K];
             
             Wall1 = false;
         elseif Wall2 && abs(Y - Y2) < 0.001
@@ -132,7 +132,7 @@ grid on
 hold on
 plot(prisma(1,:),prisma(2,:));
 axis([-6 6 -6 6]);
-
+hold off
 
 
 
