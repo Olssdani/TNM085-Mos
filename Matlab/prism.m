@@ -3,7 +3,7 @@
 %n1-Brytningsindex för mediumet utanför prismat
 %n2-Brytningsindex för prismat
 %Prismat i en 2x4 matris där första raden är x pos och andra raden är y pos
-function [out] = prism(n1, n2,prisma)
+function [] = prism(n1, n2,prisma)
 %% Inställningar
 % Strålens längd
 X =-6:0.001:6;
@@ -58,7 +58,7 @@ for a = X
         Y3 = (K_3*a+M_3); % Tredje väggen
         
         % Kollar om den krockar med någon väg
-        if Wall1 && abs(Y - Y1) < 0.001
+        if Wall1 && abs(Y - Y1) < 0.01
             % adderar talet
             Y_out(index) = Y;
             % Hittar vinkeln
@@ -77,11 +77,12 @@ for a = X
                 angle_in = angle_in+(angle_in-angle_out);
                 [K, M, angle_out] = line_ekv(angle_in, Y, a, n2, n1);
             end
+           
             
             ljus =[1, K];
             
             Wall1 = false;
-        elseif Wall2 && abs(Y - Y2) < 0.001
+        elseif Wall2 && abs(Y - Y2) < 0.01 
             Y_out(index) = Y;
             angle_in = acosd(dot(ljus, norm2)/(norm(ljus)*norm(norm2)));
             if angle_in > 90
@@ -95,9 +96,10 @@ for a = X
             else
                 [K, M,angle_out] = line_ekv(angle_in, Y, a, n2, n1);
             end
+            
             ljus =[1, K]
             Wall2 = false;
-        elseif Wall3 && abs(Y - Y3) < 0.001
+        elseif Wall3 && abs(Y - Y3) < 0.01
             % adderar talet
             Y_out(index) = Y;
             % Hittar vinkeln
@@ -113,6 +115,7 @@ for a = X
             else
                 [K, M, angle_out] = line_ekv(angle_in, Y, a, n2, n1);
             end
+
             ljus =[1, K];
             Wall3 = false;
         else
