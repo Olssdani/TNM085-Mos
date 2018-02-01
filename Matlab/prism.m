@@ -51,61 +51,67 @@ first = true;
 % loopar över alla x värden
 for a = X
     % Beräknar Y värden mot väggarna
-    Y = K*a +M; % Ljustrålens y värde
+     % Ljustrålens y värde
+     Y = K*a +M;
     if a>=min(prisma(1,:)) && a<=max(prisma(1,:))
-        Y1 = (K_1*a+M_1); % Första väggen
-        Y2 = (K_2*a+M_2);% Andra väggen
-        Y3 = (K_3*a+M_3); % Tredje väggen
         
-        % Kollar om den krockar med någon väg
-        if Wall1 && abs(Y - Y1) < 0.02
-            % adderar talet
-            Y_out(index) = Y;              
-            % Kollar om strålen är i mediumet eller inte
-            if first
-                angle_in = acosd(dot(ljus, norm1)/(norm(ljus)*norm(norm1)))
-                [K, M, angle_out] = line_ekv(angle_in, Y, a, n1, n2);
-                angle_out
-                first = false;
-            end
-            
-            ljus =[1, K];
-            
-            Wall1 = false;
-        elseif Wall2 && abs(Y - Y2) < 0.02
-            % adderar talet till vektorn
-            Y_out(index) = Y;
-            
-           
+        if ~((abs(Y-prisma(2,1))<0.05 && abs(a-prisma(1,1))<0.05)||(abs(Y-prisma(2,2))<0.05 && abs(a-prisma(1,2))<0.05)||(abs(Y-prisma(2,3))<0.05 && abs(a-prisma(1,3))<0.05))
+            Y1 = (K_1*a+M_1); % Första väggen
+            Y2 = (K_2*a+M_2);% Andra väggen
+            Y3 = (K_3*a+M_3); % Tredje väggen
 
-            % Kollar om strålen är i mediumet eller inte
-            if first
-                angle_in = acosd(dot(ljus, norm2)/(norm(ljus)*norm(norm2)))
-                [K, M, angle_out] = line_ekv(angle_in, Y, a, n1, n2);
-                angle_out
-                first = false;
+            % Kollar om den krockar med någon väg
+            if Wall1 && abs(Y - Y1) < 0.02
+                % adderar talet
+                Y_out(index) = Y;              
+                % Kollar om strålen är i mediumet eller inte
+                if first
+                    angle_in = acosd(dot(ljus, norm1)/(norm(ljus)*norm(norm1)));
+                    [K, M, angle_out] = line_ekv(angle_in, Y, a, n1, n2);
+                    first = false;
+                end
+
+                ljus =[1, K];
+
+                Wall1 = false;
+            elseif Wall2 && abs(Y - Y2) < 0.02
+                % adderar talet till vektorn
+                Y_out(index) = Y;
+
+
+
+                % Kollar om strålen är i mediumet eller inte
+                if first
+                    angle_in = acosd(dot(ljus, norm2)/(norm(ljus)*norm(norm2)));
+                    [K, M, angle_out] = line_ekv(angle_in, Y, a, n1, n2);
+                    first = false;
+                end
+                ljus =[1, K];
+                Wall2 = false;
+            elseif Wall3 && abs(Y - Y3) < 0.02
+                % adderar talet
+                Y_out(index) = Y;
+
+                % Kollar om strålen är i mediumet eller inte
+                if first
+                    angle_in = acosd(dot(ljus, norm3)/(norm(ljus)*norm(norm3)));
+                    [K, M, angle_out] = line_ekv(angle_in, Y, a, n1, n2);
+                    first = false;
+                end
+                ljus =[1, K];
+                Wall3 = false;
+            else
+                % addera talet
+                Y_out(index) = Y;
             end
-            ljus =[1, K];
-            Wall2 = false;
-        elseif Wall3 && abs(Y - Y3) < 0.02
-            % adderar talet
-            Y_out(index) = Y;
-            
-            % Kollar om strålen är i mediumet eller inte
-            if first
-                angle_in = acosd(dot(ljus, norm3)/(norm(ljus)*norm(norm3)))
-                [K, M, angle_out] = line_ekv(angle_in, Y, a, n1, n2);
-                angle_out
-                first = false;
-            end
-            ljus =[1, K];
-            Wall3 = false;
         else
-            % addera talet
-            Y_out(index) = Y;
+            Y_out(index) =0 ;
+            X(index:length(X)) = a;
+            
         end
     else
         Y_out(index) = Y;
+        
     end
     index = index + 1;
 end

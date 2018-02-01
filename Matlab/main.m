@@ -22,16 +22,13 @@ Prism_kord = [0, 2.5981-0.866, 0;
 %% Rotation
 
 for i=0:1:360
-    i
     rotation = [cosd(i) -sind(i) 0;
         sind(i) cosd(i) 0;
         0 0 1]; 
     Roterad = rotation*Prism_kord;
-   % plot(Roterad(1,:),Roterad(2,:));
     prism(n1,n2, Roterad);
-    %axis([-6 6 -6 6]);
-    %grid 
-    prompt = '';
-    x = input(prompt)
+
+   % prompt = '';
+    %x = input(prompt)
     drawnow
 end
