@@ -3,13 +3,13 @@ function [X,Y] = rot_PosLive(xin, yin, w)
 
 %theta = atan(yin/xin);
 
-h = 1;
+h = 0.1;
 r = sqrt(xin^2+yin^2);
 
 
 
 if xin > 0
-   theta = atan(yin/xin);
+   theta = atan(yin/xin); %Skrivet av Erik
     else if xin < 0 && yin >= 0 
           theta = atan(yin/xin) + pi;
         else if xin < 0 && yin <0
