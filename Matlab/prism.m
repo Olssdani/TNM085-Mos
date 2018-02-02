@@ -69,6 +69,9 @@ for a = X
                     angle_in = acosd(dot(ljus, norm1)/(norm(ljus)*norm(norm1)));
                     [K, M, angle_out] = line_ekv(angle_in, Y, a, n1, n2);
                     first = false;
+                else
+                    angle_in =angle_in +(angle_in-angle_out)
+                    [K, M, angle_out] = line_ekv(angle_in, Y, a, n2, n1);
                 end
 
                 ljus =[1, K];
@@ -85,6 +88,9 @@ for a = X
                     angle_in = acosd(dot(ljus, norm2)/(norm(ljus)*norm(norm2)));
                     [K, M, angle_out] = line_ekv(angle_in, Y, a, n1, n2);
                     first = false;
+                else
+                    angle_in =angle_in +(angle_in-angle_out)
+                    [K, M, angle_out] = line_ekv(angle_in, Y, a, n2, n1);
                 end
                 ljus =[1, K];
                 Wall2 = false;
@@ -97,6 +103,9 @@ for a = X
                     angle_in = acosd(dot(ljus, norm3)/(norm(ljus)*norm(norm3)));
                     [K, M, angle_out] = line_ekv(angle_in, Y, a, n1, n2);
                     first = false;
+                else
+                    angle_in =angle_in +(angle_in-angle_out)
+                    [K, M, angle_out] = line_ekv(angle_in, Y, a, n2, n1);
                 end
                 ljus =[1, K];
                 Wall3 = false;
