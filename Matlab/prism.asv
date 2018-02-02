@@ -101,7 +101,7 @@ for a = X
                     angle = 60-angle_out
                     second = false;
                     if(abs(angle) <= crit_angle)
-                        [K, M, angle_out] = line_ekv_second(angle,angle_in,angle_out, Y, a, n2, n1);
+                        [K, M, angle_out] = line_ekv_second(angle,angle_in, Y, a, n2, n1);
                         
                     else
                         Y_out(index) =Y ;
@@ -124,7 +124,7 @@ for a = X
                     angle = 60-angle_out
                     second = false;
                     if(abs(angle) <= crit_angle)
-                        [K, M, angle_out] = line_ekv_second(angle,angle_in,angle_out, Y, a, n2, n1);
+                        [K, M, angle_out] = line_ekv_second(angle,angle_in, Y, a, n2, n1);
                     else
                         Y_out(index) =Y ;
                         X(index:length(X)) = a;
