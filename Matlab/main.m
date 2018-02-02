@@ -34,23 +34,3 @@ for i=0:1:360
 end
 
 %%
-
-x = 1;
-y = -1; 
-X = zeros(1,360);
-Y = zeros(1,360);
-
-
-for j = 1:1:360;
-    
-   [X(j), Y(j)] = rot_PosLive(x, y, pi/20);
-   x = X(j);
-   y = Y(j);
-   
-   drawnow
-   plot(X,Y);
-    
-    
-end
-
-
