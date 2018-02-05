@@ -1,0 +1,6 @@
+﻿  main.cpp
+c:\users\daniel olsson\documents\tnm085-mos\gameengine\gameengine\src\shader.h(3): warning C4067: unexpected tokens following preprocessor directive - expected a newline
+c:\users\daniel olsson\documents\tnm085-mos\gameengine\gameengine\src\main.cpp(76): warning C4838: conversion from 'double' to 'float' requires a narrowing conversion
+c:\users\daniel olsson\documents\tnm085-mos\gameengine\gameengine\src\main.cpp(76): warning C4305: 'initializing': truncation from 'double' to 'float'
+c:\users\daniel olsson\documents\tnm085-mos\gameengine\gameengine\src\main.cpp(174): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+  GameEngine.vcxproj -> C:\Users\Daniel olsson\Documents\TNM085-Mos\GameEngine\Debug\GameEngine.exe
