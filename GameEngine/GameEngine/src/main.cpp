@@ -9,14 +9,24 @@
 #include "stb_image.h"
 //Funktion Def
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
+void mouse_callback(GLFWwindow* window, double xpos, double ypos);
 void processInput(GLFWwindow *window);
 
 //SKärmstorlek
 const unsigned int SCR_WIDTH = 800;
 const unsigned int SCR_HEIGHT = 600;
+float lastX = 400, lastY = 300;
+bool firstMouse = true;
+float yaw = -90.0f;	// yaw is initialized to -90.0 degrees since a yaw of 0.0 results in a direction vector pointing to the right so we initially rotate a bit to the left.
+float pitch = 0.0f;
+
+// GLobala variabler för cameran
 glm::vec3 cameraPos = glm::vec3(0.0f, 0.0f, 3.0f);
 glm::vec3 cameraFront = glm::vec3(0.0f, 0.0f, -1.0f);
 glm::vec3 cameraUp = glm::vec3(0.0f, 1.0f, 0.0f);
+glm::mat4 projection = glm::mat4(1.0f);
+//Globala tidsvariabler
+
 float deltaTime = 0.0f;	// Time between current frame and last frame
 float lastFrame = 0.0f; // Time of last frame
 
@@ -32,7 +42,7 @@ int main()
 	
 	//Denna raden behövs för mac!!!!!!!!!!!!!!
 	//glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
-
+	
 	//Skapar pointer till fönstret objektet
 	//GLFWwindow* window = glfwCreateWindow(SCR_WIDTH, SCR_HEIGHT, "Prisma", glfwGetPrimaryMonitor(), NULL); //Fullscreen men blev fel med viewport, har inte orkat lösa de än
 	GLFWwindow* window = glfwCreateWindow(SCR_WIDTH, SCR_HEIGHT, "Prisma", NULL, NULL);
@@ -47,6 +57,7 @@ int main()
 
 	// Callback funktion som kallas så får vi uppdaterar skärmstorleken och sedan ändrar viewporten
 	glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
+	glfwSetCursorPosCallback(window, mouse_callback);
 
 	//Gör massa saker så att vi slipper det. Typ att plocka fram information om vårt grafikkort
 	//Fråga inte mig hur de funkar!
@@ -66,12 +77,12 @@ int main()
 	// ------------------------------------------------------------------
 	float vertices[] = {
 		// positions          // colors          
-		0.0f,  0.34642, 0.4f,   1.0f, 0.0f, 0.0f,  
-		0.3f, -0.1732f, 0.4f,   1.0f, 0.0f, 0.0f,  
-		-0.3f, -0.1732f, 0.4f,   1.0f, 0.0f, 0.0f, 
-		0.0f,  0.34642, -0.4f,   0.0f, 1.0f, 0.0f, 
-		0.3f, -0.1732f, -0.4f,   0.0f, 1.0f, 0.0f,  
-		-0.3f, -0.1732f, -0.4f,   0.0f, 1.0f, 0.0f
+		0.0f,  0.4f, 0.34642,   1.0f, 0.0f, 0.0f,
+		0.3f,  0.4f, -0.1732f,  1.0f, 0.0f, 0.0f,
+		-0.3f,  0.4f,-0.1732f,   1.0f, 0.0f, 0.0f,
+		0.0f,   -0.4f,0.34642,   0.0f, 1.0f, 0.0f,
+		0.3f,  -0.4f,-0.1732f,   0.0f, 1.0f, 0.0f,
+		-0.3f, -0.4f, -0.1732f,   0.0f, 1.0f, 0.0f
 
  	};
 	unsigned int indices[] = {
@@ -164,23 +175,28 @@ int main()
 	glUniform1i(glGetUniformLocation(ourShader.ID, "texture1"), 0);
 	// or set it via the texture class
 
-	//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+	glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 	
-
+	glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 	// render loop
 	// -----------
+	glm::mat4 model = glm::mat4(1.0f);
+	glm::mat4 view = glm::mat4(1.0f);
+	
+	projection = glm::perspective(glm::radians(45.0f), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 100.0f);
 	while (!glfwWindowShouldClose(window))
 	{
 		float currentFrame = glfwGetTime();
 		deltaTime = currentFrame - lastFrame;
 		lastFrame = currentFrame;
+		
 		// input
 		// -----
 		processInput(window);
 
 		// render
 		// ------
-		glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
+		glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	
 
@@ -195,13 +211,12 @@ int main()
 		ourShader.use();
 
 		//transform
-		glm::mat4 model = glm::mat4(1.0f);
-		glm::mat4 view = glm::mat4(1.0f);
-		glm::mat4 projection = glm::mat4(1.0f);
 		
-		model = glm::rotate(model, (float)glfwGetTime() * glm::radians(50.0f), glm::vec3(0.5f, 1.0f, 0.0f));
+		
+		
+		model = glm::rotate(model, deltaTime * glm::pi<float>()/2, glm::vec3(0.0f, 1.0f, 0.0f));
 		view = glm::lookAt(cameraPos, cameraPos + cameraFront, cameraUp);
-		projection = glm::perspective(glm::radians(45.0f), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 100.0f);
+		
 
 
 		// pass them to the shaders (3 different ways)
@@ -257,6 +272,42 @@ void framebuffer_size_callback(GLFWwindow* window, int width, int height)
 {
 	// make sure the viewport matches the new window dimensions; note that width and 
 	// height will be significantly larger than specified on retina displays.
+	
 	glViewport(0, 0, width, height);
+
+	projection = glm::perspective(glm::radians(45.0f), (float)width / (float)height, 0.1f, 100.0f);
 }
 
+void mouse_callback(GLFWwindow* window, double xpos, double ypos) {
+	if (firstMouse)
+	{
+		lastX = xpos;
+		lastY = ypos;
+		firstMouse = false;
+	}
+
+	float xoffset = xpos - lastX;
+	float yoffset = lastY - ypos;
+	lastX = xpos;
+	lastY = ypos;
+
+	float sensitivity = 0.05;
+	xoffset *= sensitivity;
+	yoffset *= sensitivity;
+
+	yaw += xoffset;
+	pitch += yoffset;
+
+	if (pitch > 89.0f)
+		pitch = 89.0f;
+	if (pitch < -89.0f)
+		pitch = -89.0f;
+
+	glm::vec3 front;
+	front.x = cos(glm::radians(yaw)) * cos(glm::radians(pitch));
+	front.y = sin(glm::radians(pitch));
+	front.z = sin(glm::radians(yaw)) * cos(glm::radians(pitch));
+	cameraFront = glm::normalize(front);
+
+
+}
