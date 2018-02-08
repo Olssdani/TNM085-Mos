@@ -69,14 +69,15 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <IncludePath>C:\Users\Daniel olsson\Documents\Programmering\Opengl\GameEngine\GameEngine\src;C:\Users\Daniel olsson\Documents\Programmering\Opengl\GameEngine\GameEngine\Include;$(IncludePath)</IncludePath>
+    <IncludePath>C:\Users\daniel\Documents\TNM085-Mos\GameEngine\GameEngine\Include;C:\Users\Daniel olsson\Documents\Programmering\Opengl\GameEngine\GameEngine\src;C:\Users\Daniel olsson\Documents\Programmering\Opengl\GameEngine\GameEngine\Include;$(IncludePath)</IncludePath>
+    <LibraryPath>C:\Users\daniel\Documents\TNM085-Mos\GameEngine\GameEngine\Libs;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>C:\Users\Daniel olsson\Documents\TNM085-Mos\GameEngine\GameEngine\Include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Users\daniel\Documents\TNM085-Mos\GameEngine\GameEngine\Include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <AdditionalDependencies>opengl32.lib;glfw3.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>

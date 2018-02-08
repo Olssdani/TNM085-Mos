@@ -15,7 +15,9 @@ void processInput(GLFWwindow *window);
 //SKärmstorlek
 const unsigned int SCR_WIDTH = 800;
 const unsigned int SCR_HEIGHT = 600;
-float lastX = 400, lastY = 300;
+//Center på skärmern
+float lastX = SCR_WIDTH/2, lastY = SCR_HEIGHT/2;
+//Camera värden för FPP kameran
 bool firstMouse = true;
 float yaw = -90.0f;	// yaw is initialized to -90.0 degrees since a yaw of 0.0 results in a direction vector pointing to the right so we initially rotate a bit to the left.
 float pitch = 0.0f;
@@ -24,9 +26,11 @@ float pitch = 0.0f;
 glm::vec3 cameraPos = glm::vec3(0.0f, 0.0f, 3.0f);
 glm::vec3 cameraFront = glm::vec3(0.0f, 0.0f, -1.0f);
 glm::vec3 cameraUp = glm::vec3(0.0f, 1.0f, 0.0f);
-glm::mat4 projection = glm::mat4(1.0f);
-//Globala tidsvariabler
 
+//GLobal projectionmatris
+glm::mat4 projection = glm::mat4(1.0f);
+
+//Globala tidsvariabler
 float deltaTime = 0.0f;	// Time between current frame and last frame
 float lastFrame = 0.0f; // Time of last frame
 
@@ -52,11 +56,13 @@ int main()
 		glfwTerminate();
 		return -1;
 	}
+
 	//Sätter vårt fönster till main fönstret ifall vi skulle ha flera fönster
 	glfwMakeContextCurrent(window);
 
 	// Callback funktion som kallas så får vi uppdaterar skärmstorleken och sedan ändrar viewporten
 	glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
+	// Callback funktion som kallas så fort musen rör på sig 
 	glfwSetCursorPosCallback(window, mouse_callback);
 
 	//Gör massa saker så att vi slipper det. Typ att plocka fram information om vårt grafikkort
@@ -67,14 +73,11 @@ int main()
 		return -1;
 	}
 
-
-	glEnable(GL_DEPTH_TEST);
-	// build and compile our shader zprogram
-	// ------------------------------------
+	
+	// Här byggs vår shaders
 	Shader ourShader("Shaders/Vertex.glsl", "Shaders/Fragment.glsl");
 
-	// set up vertex data (and buffer(s)) and configure vertex attributes
-	// ------------------------------------------------------------------
+	//Våra vertrices för prismat
 	float vertices[] = {
 		// positions          // colors          
 		0.0f,  0.4f, 0.34642,   1.0f, 0.0f, 0.0f,
@@ -85,6 +88,7 @@ int main()
 		-0.3f, -0.4f, -0.1732f,   0.0f, 1.0f, 0.0f
 
  	};
+	//Vår indices som specifikserar i vilken ordning trianglarna målas upp
 	unsigned int indices[] = {
 		0, 2, 1,
 		3,5,4,
@@ -95,13 +99,20 @@ int main()
 		2,5,1,
 		1,5,4
 	};
+
+	// Våra olika bufferar. Dessa gör så vi kan skicka stora delar vertiser samtidigt så vi slipper skicka 1 i taget
+	//VBO(vertex buffer object) skickar våra vertriser till GPU'n
+	//Alla buffrar måste vara unsigned ints
 	unsigned int VBO, VAO, EBO;
 	glGenVertexArrays(1, &VAO);
+	
+	//Skapar ett eller flera buffer objekt
 	glGenBuffers(1, &VBO);
 	glGenBuffers(1, &EBO);
 
 	glBindVertexArray(VAO);
 
+	//Binder Buffern till det sóm den skall bindas till
 	glBindBuffer(GL_ARRAY_BUFFER, VBO);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
 
@@ -115,7 +126,8 @@ int main()
 	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6* sizeof(float), (void*)(3 * sizeof(float)));
 	glEnableVertexAttribArray(1);
 
-
+	// Gör så vi har en depth buffer, dvs en z buffer så opengl vet vad som ligger bakom och framför 
+	glEnable(GL_DEPTH_TEST);
 
 	// load and create a texture 
 	// -------------------------
@@ -211,9 +223,6 @@ int main()
 		ourShader.use();
 
 		//transform
-		
-		
-		
 		model = glm::rotate(model, deltaTime * glm::pi<float>()/2, glm::vec3(0.0f, 1.0f, 0.0f));
 		view = glm::lookAt(cameraPos, cameraPos + cameraFront, cameraUp);
 		
@@ -308,6 +317,5 @@ void mouse_callback(GLFWwindow* window, double xpos, double ypos) {
 	front.y = sin(glm::radians(pitch));
 	front.z = sin(glm::radians(yaw)) * cos(glm::radians(pitch));
 	cameraFront = glm::normalize(front);
-
 
 }
