@@ -1,22 +1,16 @@
+
 #version 330 core
 out vec4 FragColor;
 
-in float type;
-in vec3 ourColor;
-in vec2 TexCoord;
+in vec3 Normal;
+in vec3 Position;
 
-uniform sampler2D ourTexture;
-
-
+uniform vec3 cameraPos;
+uniform samplerCube skybox;
 
 void main()
-{
-	if(type == 0.0f){
-		FragColor = vec4(ourColor, 1.0f);	
-	}else{
-	FragColor = vec4(ourColor, 1.0f);
-		
-		FragColor = texture(ourTexture, TexCoord);
-	}
-    
+{             
+    vec3 I = normalize(Position - cameraPos);
+    vec3 R = reflect(I, normalize(Normal));
+    FragColor = vec4(texture(skybox, R).rgb, 1.0);
 }
