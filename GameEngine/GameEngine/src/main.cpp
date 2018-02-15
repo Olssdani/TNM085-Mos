@@ -27,7 +27,7 @@ float yaw = -90.0f;	// yaw is initialized to -90.0 degrees since a yaw of 0.0 re
 float pitch = 0.0f;
 
 // GLobala variabler för cameran
-glm::vec3 cameraPos = glm::vec3(0.0f, 0.0f, 3.0f);
+glm::vec3 cameraPos = glm::vec3(0.0f, 0.0f, 0.9f);
 glm::vec3 cameraFront = glm::vec3(0.0f, 0.0f, -1.0f);
 glm::vec3 cameraUp = glm::vec3(0.0f, 1.0f, 0.0f);
 
@@ -82,30 +82,74 @@ int main()
 	Shader skyboxShader("Shaders/skybox_vertex.glsl", "Shaders/skybox_fragment.glsl");
 	//Våra vertrices för prismat
 	float prism[] = {
+		// positions          // normals
+		-0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,
+		0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,
+		0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f,
+		0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f,
+		-0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f,
+		-0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,
+
+		-0.5f, -0.5f,  0.5f,  0.0f,  0.0f, 1.0f,
+		0.5f, -0.5f,  0.5f,  0.0f,  0.0f, 1.0f,
+		0.5f,  0.5f,  0.5f,  0.0f,  0.0f, 1.0f,
+		0.5f,  0.5f,  0.5f,  0.0f,  0.0f, 1.0f,
+		-0.5f,  0.5f,  0.5f,  0.0f,  0.0f, 1.0f,
+		-0.5f, -0.5f,  0.5f,  0.0f,  0.0f, 1.0f,
+
+		-0.5f,  0.5f,  0.5f, -1.0f,  0.0f,  0.0f,
+		-0.5f,  0.5f, -0.5f, -1.0f,  0.0f,  0.0f,
+		-0.5f, -0.5f, -0.5f, -1.0f,  0.0f,  0.0f,
+		-0.5f, -0.5f, -0.5f, -1.0f,  0.0f,  0.0f,
+		-0.5f, -0.5f,  0.5f, -1.0f,  0.0f,  0.0f,
+		-0.5f,  0.5f,  0.5f, -1.0f,  0.0f,  0.0f,
+
+		0.5f,  0.5f,  0.5f,  1.0f,  0.0f,  0.0f,
+		0.5f,  0.5f, -0.5f,  1.0f,  0.0f,  0.0f,
+		0.5f, -0.5f, -0.5f,  1.0f,  0.0f,  0.0f,
+		0.5f, -0.5f, -0.5f,  1.0f,  0.0f,  0.0f,
+		0.5f, -0.5f,  0.5f,  1.0f,  0.0f,  0.0f,
+		0.5f,  0.5f,  0.5f,  1.0f,  0.0f,  0.0f,
+
+		-0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,
+		0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,
+		0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,
+		0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,
+		-0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,
+		-0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,
+
+		-0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f,
+		0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f,
+		0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,
+		0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,
+		-0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,
+		-0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f
+	};
+	/*float prism[] = {
 		// positions				// Normal			/texture
-		0.0f,  0.4f, 0.34642,		0.0f, 1.0f, 0.0f,	//1
-		0.0f,  0.4f, 0.34642,		0.1890f, 0.0f, -0.9820f,	
-		0.0f,  0.4f, 0.34642,		-0.1890f, 0.0f, -0.9820f,
+		0.0f,  0.4f/10.0f, 0.34642 / 10.0f,		0.0f, 1.0f, 0.0f,	//1
+		0.0f,  0.4f / 10.0f, 0.34642/10.0f,		0.1890f, 0.0f, -0.9820f,
+		0.0f,  0.4f/10.0f, 0.34642/10.0f,		-0.1890f, 0.0f, -0.9820f,
 		
-		0.3f,  0.4f, -0.1732f,		0.0f, 1.0f, 0.0f,	//2
-		0.3f,  0.4f, -0.1732f,		0.0f, 0.0f, 1.0f,			
-		0.3f,  0.4f, -0.1732f,		0.1890f, 0.0f, -0.9820f,
+		0.3f / 10.0f , 0.4f / 10.0f , -0.1732f / 10.0f,		0.0f, 1.0f, 0.0f,	//2
+		0.3f / 10.0f,  0.4f / 10.0f, -0.1732f / 10.0f,		0.0f, 0.0f, 1.0f,
+		0.3f / 10.0f,  0.4f / 10.0f, -0.1732f / 10.0f,		0.1890f, 0.0f, -0.9820f,
 		
-		-0.3f, 0.4f, -0.1732f,		0.0f, 1.0f, 0.0f,		//3
-		-0.3f, 0.4f, -0.1732f,		0.0f, 0.0f, 1.0f,			
-		-0.3f, 0.4f, -0.1732f,		-0.1890f, 0.0f, -0.9820f,	
+		-0.3f / 10.0f, 0.4f / 10.0f, -0.1732f / 10.0f,		0.0f, 1.0f, 0.0f,		//3
+		-0.3f / 10.0f, 0.4f / 10.0f, -0.1732f / 10.0f,		0.0f, 0.0f, 1.0f,
+		-0.3f / 10.0f, 0.4f / 10.0f, -0.1732f / 10.0f,		-0.1890f, 0.0f, -0.9820f,
 		
-		0.0f,  -0.4f, 0.34642,		0.0f, -1.0f, 0.0f,			//4
-		0.0f,  -0.4f, 0.34642,		0.1890, 0.0f, -0.9820f,	
-		0.0f,  -0.4f, 0.34642,		-0.1890f, 0.0f, -0.9820f,	
+		0.0f,  -0.4f / 10.0f, 0.34642 / 10.0f,		0.0f, -1.0f, 0.0f,			//4
+		0.0f,  -0.4f / 10.0f, 0.34642 / 10.0f,		0.1890, 0.0f, -0.9820f,
+		0.0f,  -0.4f / 10.0f, 0.34642 / 10.0f,		-0.1890f, 0.0f, -0.9820f,
 
-		0.3f,  -0.4f, -0.1732f,		0.0f, -1.0f, 0.0f,			//5
-		0.3f,  -0.4f, -0.1732f,		0.0f, 0.0f, 1.0f,			
-		0.3f,  -0.4f, -0.1732f,		0.1890f, 0.0f, -0.9820f,
+		0.3f / 10.0f,  -0.4f / 10.0f, -0.1732f / 10.0f,		0.0f, -1.0f, 0.0f,			//5
+		0.3f / 10.0f,  -0.4f / 10.0f, -0.1732f / 10.0f,		0.0f, 0.0f, 1.0f,
+		0.3f / 10.0f,  -0.4f / 10.0f, -0.1732f / 10.0f,		0.1890f / 10.0f, 0.0f, -0.9820f,
 
-		-0.3f, -0.4f, -0.1732f,		0.0f, -1.0f, 0.0f,			//6
-		-0.3f, -0.4f, -0.1732f,		0.0f, 0.0f, 1.0f,			
-		-0.3f, -0.4f, -0.1732f,		-0.1890f, 0.0f, -0.9820f,	
+		-0.3f / 10.0f, -0.4f / 10.0f, -0.1732f / 10.0f,		0.0f, -1.0f, 0.0f,			//6
+		-0.3f / 10.0f, -0.4f / 10.0f, -0.1732f / 10.0f,		0.0f, 0.0f, 1.0f,
+		-0.3f / 10.0f, -0.4f / 10.0f, -0.1732f / 10.0f,		-0.1890f, 0.0f, -0.9820f,
  	};
 	//Vår indices som specifikserar i vilken ordning trianglarna målas upp
 	unsigned int prism_ind[] = {
@@ -117,80 +161,65 @@ int main()
 		8,11,17,//vänster 2
 		1,5,10,//Höger 1
 		5,14,10//höger 2
-	};
-
-	float vertices[] = {
-    -0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,
-     0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f, 
-     0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f, 
-     0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f, 
-    -0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f, 
-    -0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f, 
-
-    -0.5f, -0.5f,  0.5f,  0.0f,  0.0f, 1.0f,
-     0.5f, -0.5f,  0.5f,  0.0f,  0.0f, 1.0f,
-     0.5f,  0.5f,  0.5f,  0.0f,  0.0f, 1.0f,
-     0.5f,  0.5f,  0.5f,  0.0f,  0.0f, 1.0f,
-    -0.5f,  0.5f,  0.5f,  0.0f,  0.0f, 1.0f,
-    -0.5f, -0.5f,  0.5f,  0.0f,  0.0f, 1.0f,
-
-    -0.5f,  0.5f,  0.5f, -1.0f,  0.0f,  0.0f,
-    -0.5f,  0.5f, -0.5f, -1.0f,  0.0f,  0.0f,
-    -0.5f, -0.5f, -0.5f, -1.0f,  0.0f,  0.0f,
-    -0.5f, -0.5f, -0.5f, -1.0f,  0.0f,  0.0f,
-    -0.5f, -0.5f,  0.5f, -1.0f,  0.0f,  0.0f,
-    -0.5f,  0.5f,  0.5f, -1.0f,  0.0f,  0.0f,
-
-     0.5f,  0.5f,  0.5f,  1.0f,  0.0f,  0.0f,
-     0.5f,  0.5f, -0.5f,  1.0f,  0.0f,  0.0f,
-     0.5f, -0.5f, -0.5f,  1.0f,  0.0f,  0.0f,
-     0.5f, -0.5f, -0.5f,  1.0f,  0.0f,  0.0f,
-     0.5f, -0.5f,  0.5f,  1.0f,  0.0f,  0.0f,
-     0.5f,  0.5f,  0.5f,  1.0f,  0.0f,  0.0f,
-
-    -0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,
-     0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,
-     0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,
-     0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,
-    -0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,
-    -0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,
-
-    -0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f,
-     0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f,
-     0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,
-     0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,
-    -0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,
-    -0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f
-};
-	/*float Wall[] = {
-		// positions          // colors     
-		-1.0f, -1.0f, 1.0,     1.0f, 0.0f, 0.0f,  0.0f,0.0f,
-		1.0f, -1.0f, 1.0f,     0.0f, 1.0f, 0.0f,  1.0f,0.0f,
-		1.0f, -1.0f, -1.0f,    0.0f, 0.0f, 1.0f,  1.0f,1.0f,
-		-1.0f, -1.0f, -1.0f,   1.0f, 0.0f, 0.0,   0.0f,1.0f,
-		-1.0f, 1.0f, -1.0f,    0.0f, 0.0f, 1.0f,  0.0f,0.0f,
-		1.0f, 1.0f, -1.0f,     1.0f, 0.0f, 0.0,   1.0f,0.0f
-
-
-	};
-	unsigned int Wall_ind[] = {
-		0, 1, 3,
-		1,2,3,
-		2,5,3,
-		5,4,3
-
-
 	};*/
+
+	float skyboxVertices[] = {
+		// positions          
+		-1.0f,  1.0f, -1.0f,
+		-1.0f, -1.0f, -1.0f,
+		1.0f, -1.0f, -1.0f,
+		1.0f, -1.0f, -1.0f,
+		1.0f,  1.0f, -1.0f,
+		-1.0f,  1.0f, -1.0f,
+
+		-1.0f, -1.0f,  1.0f,
+		-1.0f, -1.0f, -1.0f,
+		-1.0f,  1.0f, -1.0f,
+		-1.0f,  1.0f, -1.0f,
+		-1.0f,  1.0f,  1.0f,
+		-1.0f, -1.0f,  1.0f,
+
+		1.0f, -1.0f, -1.0f,
+		1.0f, -1.0f,  1.0f,
+		1.0f,  1.0f,  1.0f,
+		1.0f,  1.0f,  1.0f,
+		1.0f,  1.0f, -1.0f,
+		1.0f, -1.0f, -1.0f,
+
+		-1.0f, -1.0f,  1.0f,
+		-1.0f,  1.0f,  1.0f,
+		1.0f,  1.0f,  1.0f,
+		1.0f,  1.0f,  1.0f,
+		1.0f, -1.0f,  1.0f,
+		-1.0f, -1.0f,  1.0f,
+
+		-1.0f,  1.0f, -1.0f,
+		1.0f,  1.0f, -1.0f,
+		1.0f,  1.0f,  1.0f,
+		1.0f,  1.0f,  1.0f,
+		-1.0f,  1.0f,  1.0f,
+		-1.0f,  1.0f, -1.0f,
+
+		-1.0f, -1.0f, -1.0f,
+		-1.0f, -1.0f,  1.0f,
+		1.0f, -1.0f, -1.0f,
+		1.0f, -1.0f, -1.0f,
+		-1.0f, -1.0f,  1.0f,
+		1.0f, -1.0f,  1.0f
+	};
+
+
+
 
 	// Våra olika bufferar. Dessa gör så vi kan skicka stora delar vertiser samtidigt så vi slipper skicka 1 i taget
 	//VBO(vertex buffer object) skickar våra vertriser till GPU'n
 	//Alla buffrar måste vara unsigned ints
-	unsigned int VBO, VAO, EBO;
+	unsigned int VBO, VAO;// , EBO;
 	glGenVertexArrays(1, &VAO);
 	
 	//Skapar ett eller flera buffer objekt
 	glGenBuffers(1, &VBO);
-	glGenBuffers(1, &EBO);
+	//glGenBuffers(1, &EBO);
 
 	glBindVertexArray(VAO);
 
@@ -198,8 +227,8 @@ int main()
 	glBindBuffer(GL_ARRAY_BUFFER, VBO);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(prism), prism, GL_STATIC_DRAW);
 
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(prism_ind), prism_ind, GL_STATIC_DRAW);
+	//glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
+	//glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(prism_ind), prism_ind, GL_STATIC_DRAW);
 
 	// position attribute
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)0);
@@ -215,9 +244,10 @@ int main()
 	glGenBuffers(1, &skyboxVBO);
 	glBindVertexArray(skyboxVAO);
 	glBindBuffer(GL_ARRAY_BUFFER, skyboxVBO);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), &vertices, GL_STATIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(skyboxVertices), &skyboxVertices, GL_STATIC_DRAW);
 	glEnableVertexAttribArray(0);
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
+
 
 	/*glBindVertexArray(VAO[1]);
 	glBindBuffer(GL_ARRAY_BUFFER, VBO[1]);
@@ -272,17 +302,17 @@ int main()
 	
 	glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 	
-	
-
 	std::vector<std::string> faces
 	{
-		"Texture/checker.jpg",
-		"Texture/checker.jpg",
-		"Texture/checker.jpg",
-		"Texture/checker.jpg",
-		"Texture/checker.jpg",
-		"Texture/checker.jpg",
+		"right.jpg",
+		"left.jpg",
+		"top.jpg",
+		"bottom.jpg",
+		"front.jpg",
+		"back.jpg"
 	};
+
+
 	unsigned int cubemapTexture = loadCubemap(faces);
 	skyboxShader.use();
 	skyboxShader.setInt("skybox", 0);
@@ -292,7 +322,7 @@ int main()
 	
 	//Projektions matris
 	projection = glm::perspective(glm::radians(45.0f), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 100.0f);
-	
+
 	while (!glfwWindowShouldClose(window))
 	{
 		// Beräknar fram tiden sen sist gång vi loppade
@@ -324,7 +354,8 @@ int main()
 		glUniformMatrix4fv(glGetUniformLocation(ourShader.ID, "projection"), 1, GL_FALSE, &projection[0][0]);
 		glUniform1f(glGetUniformLocation(ourShader.ID, "type_in"), 0.0f);
 		glBindVertexArray(VAO);
-		glBindTexture(GL_TEXTURE_CUBE_MAP, cubemapTexture);
+		glDrawArrays(GL_TRIANGLES, 0, 36);
+		//glBindTexture(GL_TEXTURE_CUBE_MAP, cubemapTexture);
 		
 		glDrawElements(GL_TRIANGLES, 8 * 3, GL_UNSIGNED_INT, 0);
 		
@@ -362,7 +393,7 @@ int main()
 	// ------------------------------------------------------------------------
 	glDeleteVertexArrays(1, &VAO);
 	glDeleteBuffers(1, &VBO);
-	glDeleteBuffers(1, &EBO);
+	//glDeleteBuffers(1, &EBO);
 
 	// glfw: terminate, clearing all previously allocated GLFW resources.
 	// ------------------------------------------------------------------
@@ -376,7 +407,7 @@ void processInput(GLFWwindow *window)
 {
 	if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
 		glfwSetWindowShouldClose(window, true);
-	float cameraSpeed = 2.5f * deltaTime;
+	float cameraSpeed = 1.0f * deltaTime;
 	if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
 		cameraPos += cameraSpeed * cameraFront;
 	if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
