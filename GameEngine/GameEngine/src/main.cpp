@@ -79,120 +79,34 @@ int main()
 	
 	// Här byggs vår shaders
 	Shader ourShader("Shaders/Vertex.glsl", "Shaders/Fragment.glsl");
-<<<<<<< HEAD
-	//Våra vertrices för prismat
-	float prism[] = {
-		// positions          // colors          
-		0.0f,  0.4f, 0.34642,   1.0f, 0.0f, 0.0f,   0.0f,0.0f,
-		0.3f,  0.4f, -0.1732f,  1.0f, 0.0f, 0.0f,   0.0f,0.0f,
-		-0.3f,  0.4f,-0.1732f,   1.0f, 0.0f, 0.0f,   0.0f,0.0f,
-		0.0f,   -0.4f,0.34642,   0.0f, 1.0f, 0.0f,  0.0f,0.0f,
-		0.3f,  -0.4f,-0.1732f,   0.0f, 1.0f, 0.0f,  0.0f,0.0f,
-		-0.3f, -0.4f, -0.1732f,   0.0f, 1.0f, 0.0f,  0.0f,0.0f
- 	};
-	//Vår indices som specifikserar i vilken ordning trianglarna målas upp
-	unsigned int prism_ind[] = {
-		0, 2, 1,
-		3,5,4,
-		0,1,3,
-		1,4,3,
-		0,3,2,
-		2,3,5,
-		2,5,1,
-		1,5,4
-	};
-
-	float Wall[] = {
-		// positions          // colors     
-		-1.0f,  -1.0f, 1.0,     1.0f, 0.0f, 0.0f,  0.0f,0.0f,
-		1.0f,  -1.0f, 1.0f,     0.0f, 1.0f, 0.0f,  1.0f,0.0f,
-		1.0f,  -1.0f, -1.0f,    0.0f, 0.0f, 1.0f,  1.0f,1.0f,
-		-1.0f,  -1.0f, -1.0f,   1.0f, 0.0f, 0.0,   0.0f,1.0f,
-		-1.0f,  1.0f, -1.0f,    0.0f, 0.0f, 1.0f,  0.0f,0.0f,
-		1.0f,  1.0f, -1.0f,     1.0f, 0.0f, 0.0,   1.0f,0.0f
-
-
-	};
-	unsigned int Wall_ind[] = {
-		0, 1, 3,
-		1,2,3,
-		2,5,3,
-		5,4,3
-
-
-	};
-=======
 	Shader skyboxShader("Shaders/skybox_vertex.glsl", "Shaders/skybox_fragment.glsl");
+	
 	//Våra vertrices för prismat
 	float prism[] = {
-		// positions          // normals
-		-0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,
-		0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,
-		0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f,
-		0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f,
-		-0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f,
-		-0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,
-
-		-0.5f, -0.5f,  0.5f,  0.0f,  0.0f, 1.0f,
-		0.5f, -0.5f,  0.5f,  0.0f,  0.0f, 1.0f,
-		0.5f,  0.5f,  0.5f,  0.0f,  0.0f, 1.0f,
-		0.5f,  0.5f,  0.5f,  0.0f,  0.0f, 1.0f,
-		-0.5f,  0.5f,  0.5f,  0.0f,  0.0f, 1.0f,
-		-0.5f, -0.5f,  0.5f,  0.0f,  0.0f, 1.0f,
-
-		-0.5f,  0.5f,  0.5f, -1.0f,  0.0f,  0.0f,
-		-0.5f,  0.5f, -0.5f, -1.0f,  0.0f,  0.0f,
-		-0.5f, -0.5f, -0.5f, -1.0f,  0.0f,  0.0f,
-		-0.5f, -0.5f, -0.5f, -1.0f,  0.0f,  0.0f,
-		-0.5f, -0.5f,  0.5f, -1.0f,  0.0f,  0.0f,
-		-0.5f,  0.5f,  0.5f, -1.0f,  0.0f,  0.0f,
-
-		0.5f,  0.5f,  0.5f,  1.0f,  0.0f,  0.0f,
-		0.5f,  0.5f, -0.5f,  1.0f,  0.0f,  0.0f,
-		0.5f, -0.5f, -0.5f,  1.0f,  0.0f,  0.0f,
-		0.5f, -0.5f, -0.5f,  1.0f,  0.0f,  0.0f,
-		0.5f, -0.5f,  0.5f,  1.0f,  0.0f,  0.0f,
-		0.5f,  0.5f,  0.5f,  1.0f,  0.0f,  0.0f,
-
-		-0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,
-		0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,
-		0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,
-		0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,
-		-0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,
-		-0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,
-
-		-0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f,
-		0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f,
-		0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,
-		0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,
-		-0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,
-		-0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f
-	};
-	/*float prism[] = {
 		// positions				// Normal			/texture
-		0.0f,  0.4f/10.0f, 0.34642 / 10.0f,		0.0f, 1.0f, 0.0f,	//1
-		0.0f,  0.4f / 10.0f, 0.34642/10.0f,		0.1890f, 0.0f, -0.9820f,
-		0.0f,  0.4f/10.0f, 0.34642/10.0f,		-0.1890f, 0.0f, -0.9820f,
+		0.0f,  0.4f, 0.34642,		0.0f, 1.0f, 0.0f,	//1
+		0.0f,  0.4f, 0.34642,		0.1890f, 0.0f, -0.9820f,
+		0.0f,  0.4f, 0.34642,		-0.1890f, 0.0f, -0.9820f,
 		
-		0.3f / 10.0f , 0.4f / 10.0f , -0.1732f / 10.0f,		0.0f, 1.0f, 0.0f,	//2
-		0.3f / 10.0f,  0.4f / 10.0f, -0.1732f / 10.0f,		0.0f, 0.0f, 1.0f,
-		0.3f / 10.0f,  0.4f / 10.0f, -0.1732f / 10.0f,		0.1890f, 0.0f, -0.9820f,
+		0.3f , 0.4f, -0.1732f,		0.0f, 1.0f, 0.0f,	//2
+		0.3f,  0.4f, -0.1732f,		0.0f, 0.0f, 1.0f,
+		0.3f,  0.4f, -0.1732f,		0.1890f, 0.0f, -0.9820f,
 		
-		-0.3f / 10.0f, 0.4f / 10.0f, -0.1732f / 10.0f,		0.0f, 1.0f, 0.0f,		//3
-		-0.3f / 10.0f, 0.4f / 10.0f, -0.1732f / 10.0f,		0.0f, 0.0f, 1.0f,
-		-0.3f / 10.0f, 0.4f / 10.0f, -0.1732f / 10.0f,		-0.1890f, 0.0f, -0.9820f,
+		-0.3f, 0.4f, -0.1732f,		0.0f, 1.0f, 0.0f,		//3
+		-0.3f, 0.4f, -0.1732f,		0.0f, 0.0f, 1.0f,
+		-0.3f, 0.4f, -0.1732f,		-0.1890f, 0.0f, -0.9820f,
 		
-		0.0f,  -0.4f / 10.0f, 0.34642 / 10.0f,		0.0f, -1.0f, 0.0f,			//4
-		0.0f,  -0.4f / 10.0f, 0.34642 / 10.0f,		0.1890, 0.0f, -0.9820f,
-		0.0f,  -0.4f / 10.0f, 0.34642 / 10.0f,		-0.1890f, 0.0f, -0.9820f,
+		0.0f,  -0.4f, 0.34642f,		0.0f, -1.0f, 0.0f,			//4
+		0.0f,  -0.4f, 0.34642f,		0.1890, 0.0f, -0.9820f,
+		0.0f,  -0.4f, 0.34642f,		-0.1890f, 0.0f, -0.9820f,
 
-		0.3f / 10.0f,  -0.4f / 10.0f, -0.1732f / 10.0f,		0.0f, -1.0f, 0.0f,			//5
-		0.3f / 10.0f,  -0.4f / 10.0f, -0.1732f / 10.0f,		0.0f, 0.0f, 1.0f,
-		0.3f / 10.0f,  -0.4f / 10.0f, -0.1732f / 10.0f,		0.1890f / 10.0f, 0.0f, -0.9820f,
+		0.3f,  -0.4f, -0.1732f,		0.0f, -1.0f, 0.0f,			//5
+		0.3f,  -0.4f, -0.1732f,		0.0f, 0.0f, 1.0f,
+		0.3f,  -0.4f, -0.1732f,		0.1890f / 10.0f, 0.0f, -0.9820f,
 
-		-0.3f / 10.0f, -0.4f / 10.0f, -0.1732f / 10.0f,		0.0f, -1.0f, 0.0f,			//6
-		-0.3f / 10.0f, -0.4f / 10.0f, -0.1732f / 10.0f,		0.0f, 0.0f, 1.0f,
-		-0.3f / 10.0f, -0.4f / 10.0f, -0.1732f / 10.0f,		-0.1890f, 0.0f, -0.9820f,
+		-0.3f, -0.4f, -0.1732f,		0.0f, -1.0f, 0.0f,			//6
+		-0.3f, -0.4f, -0.1732f,		0.0f, 0.0f, 1.0f,
+		-0.3f, -0.4f, -0.1732f,		-0.1890f, 0.0f, -0.9820f,
  	};
 	//Vår indices som specifikserar i vilken ordning trianglarna målas upp
 	unsigned int prism_ind[] = {
@@ -204,7 +118,7 @@ int main()
 		8,11,17,//vänster 2
 		1,5,10,//Höger 1
 		5,14,10//höger 2
-	};*/
+	};
 
 	float skyboxVertices[] = {
 		// positions          
@@ -253,50 +167,30 @@ int main()
 
 
 
->>>>>>> 346e6e62f540693273f4151efc593804bdf8f0b4
 
 	// Våra olika bufferar. Dessa gör så vi kan skicka stora delar vertiser samtidigt så vi slipper skicka 1 i taget
 	//VBO(vertex buffer object) skickar våra vertriser till GPU'n
 	//Alla buffrar måste vara unsigned ints
-<<<<<<< HEAD
-	unsigned int VBO[2], VAO[2], EBO[2];
-	glGenVertexArrays(2, VAO);
-	
-	//Skapar ett eller flera buffer objekt
-	glGenBuffers(2, VBO);
-	glGenBuffers(2, EBO);
-=======
-	unsigned int VBO, VAO;// , EBO;
+	unsigned int VBO, VAO, EBO;
 	glGenVertexArrays(1, &VAO);
 	
 	//Skapar ett eller flera buffer objekt
 	glGenBuffers(1, &VBO);
-	//glGenBuffers(1, &EBO);
->>>>>>> 346e6e62f540693273f4151efc593804bdf8f0b4
+	glGenBuffers(1, &EBO);
 
-	glBindVertexArray(VAO[0]);
+	glBindVertexArray(VAO);
 
 	//Binder Buffern till det sóm den skall bindas till
-<<<<<<< HEAD
-	glBindBuffer(GL_ARRAY_BUFFER, VBO[0]);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(prism), prism, GL_STATIC_DRAW);
-
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO[0]);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(prism_ind), prism_ind, GL_STATIC_DRAW);
-=======
 	glBindBuffer(GL_ARRAY_BUFFER, VBO);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(prism), prism, GL_STATIC_DRAW);
 
-	//glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
-	//glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(prism_ind), prism_ind, GL_STATIC_DRAW);
->>>>>>> 346e6e62f540693273f4151efc593804bdf8f0b4
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(prism_ind), prism_ind, GL_STATIC_DRAW);
 
 	// position attribute
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)0);
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)0);
 	glEnableVertexAttribArray(0);
 	// color attribute
-<<<<<<< HEAD
-=======
 	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)(3 * sizeof(float)));
 	glEnableVertexAttribArray(1);
 
@@ -312,117 +206,39 @@ int main()
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
 
 
-	/*glBindVertexArray(VAO[1]);
-	glBindBuffer(GL_ARRAY_BUFFER, VBO[1]);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(Wall), Wall, GL_STATIC_DRAW);
-
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO[1]);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(Wall_ind), Wall_ind, GL_STATIC_DRAW);
-
-	// position attribute
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)0);
-	glEnableVertexAttribArray(0);
-	// color attribute
->>>>>>> 346e6e62f540693273f4151efc593804bdf8f0b4
-	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(3 * sizeof(float)));
-	glEnableVertexAttribArray(1);
-	glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(6 * sizeof(float)));
-	glEnableVertexAttribArray(2);
-
-	glBindVertexArray(VAO[1]);
-	glBindBuffer(GL_ARRAY_BUFFER, VBO[1]);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(Wall), Wall, GL_STATIC_DRAW);
-
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO[1]);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(Wall_ind), Wall_ind, GL_STATIC_DRAW);
-
-	// position attribute
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)0);
-	glEnableVertexAttribArray(0);
-	// color attribute
-	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(3 * sizeof(float)));
-	glEnableVertexAttribArray(1);
-
-	// texture coord attribute
-	glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(6 * sizeof(float)));
-	glEnableVertexAttribArray(2);
-
-
-	// texture coord attribute
-	glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(6 * sizeof(float)));
-	glEnableVertexAttribArray(2);*/
 
 
 	// Gör så vi har en depth buffer, dvs en z buffer så opengl vet vad som ligger bakom och framför 
 	glEnable(GL_DEPTH_TEST);
 
 	
-	// load and create a texture 
-	// -------------------------
-<<<<<<< HEAD
-	unsigned int texture;
-=======
-	/*unsigned int texture;
->>>>>>> 346e6e62f540693273f4151efc593804bdf8f0b4
-	glGenTextures(1, &texture);
-	glBindTexture(GL_TEXTURE_2D, texture); // all upcoming GL_TEXTURE_2D operations now have effect on this texture object
-										   // set the texture wrapping parameters
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);	// set texture wrapping to GL_REPEAT (default wrapping method)
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-	// set texture filtering parameters
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-	// load image, create texture and generate mipmaps
-	int width, height, nrChannels;
-	// The FileSystem::getPath(...) is part of the GitHub repository so we can find files on any IDE/platform; replace it with your own image path.
-	unsigned char *data = stbi_load("Texture/checker.jpg", &width, &height, &nrChannels, 0);
-	if (data)
-	{
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
-		glGenerateMipmap(GL_TEXTURE_2D);
-	}
-	else
-	{
-		std::cout << "Failed to load texture" << std::endl;
-	}
-<<<<<<< HEAD
-	stbi_image_free(data);
-=======
-	stbi_image_free(data);*/
->>>>>>> 346e6e62f540693273f4151efc593804bdf8f0b4
 	
 	//glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 	
 	glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 	
-<<<<<<< HEAD
-=======
 	std::vector<std::string> faces
 	{
-		"right.jpg",
-		"left.jpg",
-		"top.jpg",
-		"bottom.jpg",
-		"front.jpg",
-		"back.jpg"
+		"wall.jpg",
+		"wall2.jpg",
+		"floor.jpg",
+		"floor.jpg",
+		"side.jpg",
+		"wall3.jpg"
 	};
 
-
+	//initering av kuben
 	unsigned int cubemapTexture = loadCubemap(faces);
 	skyboxShader.use();
 	skyboxShader.setInt("skybox", 0);
->>>>>>> 346e6e62f540693273f4151efc593804bdf8f0b4
+	
 	//Modell och view matris
 	glm::mat4 model = glm::mat4(1.0f);
 	glm::mat4 view = glm::mat4(1.0f);
-	
+	model = glm::scale(model, glm::vec3(0.2f));
 	//Projektions matris
 	projection = glm::perspective(glm::radians(45.0f), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 100.0f);
-<<<<<<< HEAD
-	
-=======
 
->>>>>>> 346e6e62f540693273f4151efc593804bdf8f0b4
 	while (!glfwWindowShouldClose(window))
 	{
 		// Beräknar fram tiden sen sist gång vi loppade
@@ -437,21 +253,13 @@ int main()
 		glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-		// bind Texture
-<<<<<<< HEAD
-		glBindTexture(GL_TEXTURE_2D, texture);
-=======
-		//glBindTexture(GL_TEXTURE_2D, texture);
->>>>>>> 346e6e62f540693273f4151efc593804bdf8f0b4
-		// render container
+
 		ourShader.use();
 
 		//transform
-<<<<<<< HEAD
+
 		model = glm::rotate(model, deltaTime * glm::pi<float>() / 2, glm::vec3(0.0f, 1.0f, 0.0f));
-=======
-		//model = glm::rotate(model, deltaTime * glm::pi<float>() / 2, glm::vec3(0.0f, 1.0f, 0.0f));
->>>>>>> 346e6e62f540693273f4151efc593804bdf8f0b4
+
 		view = glm::lookAt(cameraPos, cameraPos + cameraFront, cameraUp);
 
 
@@ -460,42 +268,18 @@ int main()
 		glUniformMatrix4fv(glGetUniformLocation(ourShader.ID, "model"), 1, GL_FALSE, glm::value_ptr(model));
 		glUniformMatrix4fv(glGetUniformLocation(ourShader.ID, "view"), 1, GL_FALSE, &view[0][0]);
 		glUniformMatrix4fv(glGetUniformLocation(ourShader.ID, "projection"), 1, GL_FALSE, &projection[0][0]);
+		glUniform3fv(glGetUniformLocation(ourShader.ID, "cameraPos"), 1, &cameraPos[0]);
 		glUniform1f(glGetUniformLocation(ourShader.ID, "type_in"), 0.0f);
-<<<<<<< HEAD
-		glBindVertexArray(VAO[0]);
+		glBindVertexArray(VAO);		
 		glDrawElements(GL_TRIANGLES, 8 * 3, GL_UNSIGNED_INT, 0);
 		
-		glBindVertexArray(VAO[1]);
-		glUniform1f(glGetUniformLocation(ourShader.ID, "type_in"), 1.0f);
-		glm::mat4 model = glm::mat4(1.0f);
-		glUniformMatrix4fv(glGetUniformLocation(ourShader.ID, "model"), 1, GL_FALSE, glm::value_ptr(model));
-
-
-		glDrawElements(GL_TRIANGLES, 4* 3, GL_UNSIGNED_INT, 0);
-=======
-		glBindVertexArray(VAO);
-		glDrawArrays(GL_TRIANGLES, 0, 36);
-		//glBindTexture(GL_TEXTURE_CUBE_MAP, cubemapTexture);
-		
-		glDrawElements(GL_TRIANGLES, 8 * 3, GL_UNSIGNED_INT, 0);
-		
-		/*glBindVertexArray(VAO[1]);
-		glUniform1f(glGetUniformLocation(ourShader.ID, "type_in"), 1.0f);
-		glm::mat4 model = glm::mat4(1.0f);
-		glUniformMatrix4fv(glGetUniformLocation(ourShader.ID, "model"), 1, GL_FALSE, glm::value_ptr(model));
->>>>>>> 346e6e62f540693273f4151efc593804bdf8f0b4
-
-
-		glDrawElements(GL_TRIANGLES, 4* 3, GL_UNSIGNED_INT, 0);*/
 		// draw skybox as last
 		glDepthFunc(GL_LEQUAL);  // change depth function so depth test passes when values are equal to depth buffer's content
 		skyboxShader.use();
 		//view = glm::mat4(glm::mat3(camera.GetViewMatrix())); // remove translation from the view matrix
 		glUniformMatrix4fv(glGetUniformLocation(skyboxShader.ID, "view"), 1, GL_FALSE, &view[0][0]);
 		glUniformMatrix4fv(glGetUniformLocation(skyboxShader.ID, "projection"), 1, GL_FALSE, &projection[0][0]);
-		
-		//skyboxShader.setMat4("view", view);
-		//skyboxShader.setMat4("projection", projection);
+
 		// skybox cube
 		glBindVertexArray(skyboxVAO);
 		glActiveTexture(GL_TEXTURE0);
@@ -512,15 +296,9 @@ int main()
 
 	// optional: de-allocate all resources once they've outlived their purpose:
 	// ------------------------------------------------------------------------
-<<<<<<< HEAD
-	glDeleteVertexArrays(2, VAO);
-	glDeleteBuffers(2, VBO);
-	glDeleteBuffers(2, EBO);
-=======
 	glDeleteVertexArrays(1, &VAO);
 	glDeleteBuffers(1, &VBO);
-	//glDeleteBuffers(1, &EBO);
->>>>>>> 346e6e62f540693273f4151efc593804bdf8f0b4
+	glDeleteBuffers(1, &EBO);
 
 	// glfw: terminate, clearing all previously allocated GLFW resources.
 	// ------------------------------------------------------------------
