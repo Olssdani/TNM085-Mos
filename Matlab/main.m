@@ -7,25 +7,13 @@ n2 = 1.51;
 
 Prism_kord = [0, 2.5981-0.866, 0;
            1.5, -0.866, 0;
-          -1.5, -0.866 0;
+          -1.5, -0.866, 0;
           0,2.5981-0.866, 0]';  
 
 %% Rotation
 
 for i=0:1:1000
 
-% for i=0:1:360
-%     rotation = [cosd(-i) -sind(-i) 0;
-%         sind(-i) cosd(-i) 0;
-%         0 0 1]; 
-%     Roterad = rotation*Prism_kord;
-%     prism(n1,n2, Roterad);
-%     prompt = '';
-%     x = input(prompt);
-%     clc
-%     drawnow
-% end
->>>>>>> 4bf555be330a542e901a001d73f42447be2d9e32
     
     for j = 1:1:4
      [X(j),Y(j)] = rot_PosLive(Prism_kord(1, j), Prism_kord(2, j), -pi/20); 

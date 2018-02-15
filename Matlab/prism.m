@@ -34,13 +34,13 @@ M_3 =prisma(2,3)-K_3*prisma(1,3);
 ljus = [1,0];
 
 % Första väggens normalen
-norm1 = [K_1,1];
+norm1 = [K_1,1]
 
 % Första väggens normalen
-norm2 = [K_2, 1];
+norm2 = [K_2, 1]
 
 % Första väggens normalen
-norm3 = [K_3, 1];
+norm3 = [K_3, 1]
 
 %% Brytningsloopen
 % Denna söker efter vilket vägg som strålen prickar och sedan plockar
