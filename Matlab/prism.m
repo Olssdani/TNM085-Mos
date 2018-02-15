@@ -3,7 +3,7 @@
 %n1-Brytningsindex för mediumet utanför prismat
 %n2-Brytningsindex för prismat
 %Prismat i en 2x4 matris där första raden är x pos och andra raden är y pos
-function [] = prism(n1, n2,prisma)
+function [] = prism(n1, n2, prisma)
 %% Inställningar
 % Strålens längd
 X =-6:0.001:6;
@@ -158,8 +158,6 @@ hold on
 plot(prisma(1,:),prisma(2,:));
 axis([-6 6 -6 6]);
 hold off
-
-
 
 
 end
