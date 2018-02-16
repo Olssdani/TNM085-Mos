@@ -1,4 +1,3 @@
-
 #version 330 core
 out vec4 FragColor;
 
@@ -21,19 +20,25 @@ uniform samplerCube skybox;
 	//vec4 reflectionColor = texture(skybox, normalize(R_reflect));
 	
 	
-	FragColor = texture(skybox, normalize(R_refract));
-} 
-//void main()
-//{             
-//	  vec3 I = normalize(Position);
- //   vec3 R = reflect(I, normalize(Normal- cameraPos));
- //  FragColor = vec4(texture(skybox, R).rgb, 1.0);
-//}*/
+	FragColor = texture(skybox, normalize(R_reflect));
+} */
+void main()
+{             
+		 vec3 I = normalize(Position-cameraPos);
+		 vec3 R = reflect(I, normalize(Normal));
 
+		 float rim = pow(1.0-max(dot(-I, normalize(Normal)), 0.0), 8);
+
+		 FragColor = vec4(texture(skybox, R).rgb * rim, 1.0);
+
+		 // FragColor = vec4(texture(skybox, R).rgb, 1.0);
+}
+
+/*
 void main()
 {             
     float ratio = 1.00 / 1.52;
     vec3 I = normalize(Position - cameraPos);
     vec3 R = refract(I, normalize(Normal), ratio);
     FragColor = vec4(texture(skybox, R).rgb, 1.0);
-}  
+} */ 

@@ -15,7 +15,7 @@ void mouse_callback(GLFWwindow* window, double xpos, double ypos);
 void processInput(GLFWwindow *window);
 unsigned int loadCubemap(std::vector<std::string> faces);
 unsigned int loadTexture(char const * path);
-
+glm::vec3 calc_normals(glm::vec3 first, glm::vec3 second);
 //SKärmstorlek
 const unsigned int SCR_WIDTH = 800;
 const unsigned int SCR_HEIGHT = 600;
@@ -82,43 +82,84 @@ int main()
 	Shader skyboxShader("Shaders/skybox_vertex.glsl", "Shaders/skybox_fragment.glsl");
 	
 	//Våra vertrices för prismat
+	/*float prism[] = {
+		// positions				// Normal			/texture
+		0.0f,  0.4f, 0.34642,		0.0f, 1.0f, 0.0f,	//1		//0
+		0.0f,  0.4f, 0.34642,		0.1890f, 0.0f, 0.9820f,		//1
+		0.0f,  0.4f, 0.34642,		-0.1890f, 0.0f, 0.9820f,	//2
+		
+		0.3f , 0.4f, -0.1732f,		0.0f, 1.0f, 0.0f,	//2		//3
+		0.3f,  0.4f, -0.1732f,		0.0f, 0.0f, -1.0f,			//4
+		0.3f,  0.4f, -0.1732f,		0.1890f, 0.0f, 0.9820f,		//5
+		
+		-0.3f, 0.4f, -0.1732f,		0.0f, 1.0f, 0.0f,		//3	//6
+		-0.3f, 0.4f, -0.1732f,		0.0f, 0.0f, -1.0f,			//7
+		-0.3f, 0.4f, -0.1732f,		-0.1890f, 0.0f, 0.9820f,	//8
+		
+		0.0f,  -0.4f, 0.34642f,		0.0f, -1.0f, 0.0f,	//4		//9
+		0.0f,  -0.4f, 0.34642f,		0.1890, 0.0f, 0.9820f,		//10
+		0.0f,  -0.4f, 0.34642f,		-0.1890f, 0.0f, 0.9820f,	//11
+
+		0.3f,  -0.4f, -0.1732f,		0.0f, -1.0f, 0.0f,//5		//12
+		0.3f,  -0.4f, -0.1732f,		0.0f, 0.0f, -1.0f,			//13
+		0.3f,  -0.4f, -0.1732f,		0.1890f, 0.0f, 0.9820f,		//14
+
+		-0.3f, -0.4f, -0.1732f,		0.0f, -1.0f, 0.0f,	//6		//15
+		-0.3f, -0.4f, -0.1732f,		0.0f, 0.0f, -1.0f,			//16
+		-0.3f, -0.4f, -0.1732f,		-0.1890f, 0.0f, 0.9820f,	//17
+ 	};*/
+
 	float prism[] = {
 		// positions				// Normal			/texture
-		0.0f,  0.4f, 0.34642,		0.0f, 1.0f, 0.0f,	//1
-		0.0f,  0.4f, 0.34642,		0.1890f, 0.0f, -0.9820f,
-		0.0f,  0.4f, 0.34642,		-0.1890f, 0.0f, -0.9820f,
-		
-		0.3f , 0.4f, -0.1732f,		0.0f, 1.0f, 0.0f,	//2
-		0.3f,  0.4f, -0.1732f,		0.0f, 0.0f, 1.0f,
-		0.3f,  0.4f, -0.1732f,		0.1890f, 0.0f, -0.9820f,
-		
-		-0.3f, 0.4f, -0.1732f,		0.0f, 1.0f, 0.0f,		//3
-		-0.3f, 0.4f, -0.1732f,		0.0f, 0.0f, 1.0f,
-		-0.3f, 0.4f, -0.1732f,		-0.1890f, 0.0f, -0.9820f,
-		
-		0.0f,  -0.4f, 0.34642f,		0.0f, -1.0f, 0.0f,			//4
-		0.0f,  -0.4f, 0.34642f,		0.1890, 0.0f, -0.9820f,
-		0.0f,  -0.4f, 0.34642f,		-0.1890f, 0.0f, -0.9820f,
+		0.0f,  0.4f, 0.34642,		0.0f, 0.0f, 0.0f,	//1		//0
+		0.0f,  0.4f, 0.34642,		0.0f, 0.0f, 0.0f,		//1
+		0.0f,  0.4f, 0.34642,		0.0f, 0.0f, 0.0f,	//2
 
-		0.3f,  -0.4f, -0.1732f,		0.0f, -1.0f, 0.0f,			//5
-		0.3f,  -0.4f, -0.1732f,		0.0f, 0.0f, 1.0f,
-		0.3f,  -0.4f, -0.1732f,		0.1890f / 10.0f, 0.0f, -0.9820f,
+		0.3f , 0.4f, -0.1732f,		0.0f, 0.0f, 0.0f,	//2		//3
+		0.3f,  0.4f, -0.1732f,		0.0f, 0.0f, 0.0f,			//4
+		0.3f,  0.4f, -0.1732f,		0.0f, 0.0f, 0.0f,		//5
 
-		-0.3f, -0.4f, -0.1732f,		0.0f, -1.0f, 0.0f,			//6
-		-0.3f, -0.4f, -0.1732f,		0.0f, 0.0f, 1.0f,
-		-0.3f, -0.4f, -0.1732f,		-0.1890f, 0.0f, -0.9820f,
- 	};
-	//Vår indices som specifikserar i vilken ordning trianglarna målas upp
-	unsigned int prism_ind[] = {
-		0, 6, 3,//Top
-		9,12,15, //ner
-		4,7,13, //mot 1
-		7,16,13,//mot2
-		2,11,8,// vänster1
-		8,11,17,//vänster 2
-		1,5,10,//Höger 1
-		5,14,10//höger 2
+		-0.3f, 0.4f, -0.1732f,		0.0f, 0.0f, 0.0f,		//3	//6
+		-0.3f, 0.4f, -0.1732f,		0.0f, 0.0f, 0.0f,			//7
+		-0.3f, 0.4f, -0.1732f,		0.0f, 0.0f, 0.0f,	//8
+
+		0.0f,  -0.4f, 0.34642f,		0.0f, 0.0f, 0.0f,	//4		//9
+		0.0f,  -0.4f, 0.34642f,		0.0, 0.0f, 0.0f,		//10
+		0.0f,  -0.4f, 0.34642f,		0.0f, 0.0f, 0.0f,	//11
+
+		0.3f,  -0.4f, -0.1732f,		0.0f, 0.0f, 0.0f,//5		//12
+		0.3f,  -0.4f, -0.1732f,		0.0f, 0.0f, 0.0f,			//13
+		0.3f,  -0.4f, -0.1732f,		0.0f, 0.0f, 0.0f,		//14
+
+		-0.3f, -0.4f, -0.1732f,		0.0f, 0.0f, 0.0f,	//6		//15
+		-0.3f, -0.4f, -0.1732f,		0.0f, 0.0f, 0.0f,			//16
+		-0.3f, -0.4f, -0.1732f,		0.0f, 0.0f, 0.0f,	//17
 	};
+	//Vår indices som specifikserar i vilken ordning trianglarna målas upp
+	unsigned int prism_ind[24] = {
+		0, 3, 6,//Top
+		9,15,12, //ner
+		1,10,14, //1
+		1,14,5,//2
+		2,17,11,// 3
+		2,8,17,//4
+		4,13,16,//5
+		4,16,7//6
+	};
+	int count = 0;
+	glm::vec3 temp;
+	for (int i = 0; i < sizeof(prism_ind) / sizeof(prism_ind[0]); i = i + 3) {
+		//glm::vec3 first = glm::vec3(prism[(i+1)*6]-prism[i*6], prism[(i + 1) * 6+1] - prism[i * 6+1], prism[(i + 1) * 6+2] - prism[i * 6+2]);
+		//glm::vec3 second = glm::vec3(prism[(i + 2) * 6] - prism[(i+1) * 6], prism[(i + 2) * 6 + 1] - prism[(i+1) * 6 + 1], prism[(i + 2) * 6 + 2] - prism[(i+1) * 6 + 2]);
+		glm::vec3 first = glm::vec3(prism[prism_ind[i*3+1]] - prism[prism_ind[i*3]], prism[prism_ind[i * 3 + 1]+1] - prism[prism_ind[i * 3]+1], prism[prism_ind[i * 3 + 1]+2] - prism[prism_ind[i * 3]+2]);
+		glm::vec3 second = glm::vec3(prism[0] - prism[36], prism[1] - prism[37], prism[2] - prism[38]);
+		temp = cross(first, second); glm::vec3(prism[prism_ind[i * 3 + 2]] - prism[prism_ind[i * 3+1]], prism[prism_ind[i * 3 + 2] + 1] - prism[prism_ind[i * 3+1] + 1], prism[prism_ind[i * 3 + 2] + 2] - prism[prism_ind[i * 3+1] + 2]);
+		std::cout << temp[0] << ", " << temp[1] << ", " << temp[2] << std::endl;
+		++count;
+
+	}
+	std::cout << sizeof(prism_ind)/ sizeof(prism_ind[0]);
+
 
 	float skyboxVertices[] = {
 		// positions          
@@ -219,12 +260,12 @@ int main()
 	
 	std::vector<std::string> faces
 	{
-		"wall.jpg",
-		"wall2.jpg",
-		"floor.jpg",
-		"floor.jpg",
-		"side.jpg",
-		"wall3.jpg"
+		"right.jpg",
+		"left.jpg",
+		"top.jpg",
+		"bottom.jpg",
+		"front.jpg",
+		"back.jpg"
 	};
 
 	//initering av kuben
@@ -239,6 +280,9 @@ int main()
 	//Projektions matris
 	projection = glm::perspective(glm::radians(45.0f), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 100.0f);
 
+	glEnable(GL_CULL_FACE);
+	glCullFace(GL_FRONT);
+	glFrontFace(GL_CW);
 	while (!glfwWindowShouldClose(window))
 	{
 		// Beräknar fram tiden sen sist gång vi loppade
@@ -258,7 +302,7 @@ int main()
 
 		//transform
 
-		model = glm::rotate(model, deltaTime * glm::pi<float>() / 2, glm::vec3(0.0f, 1.0f, 0.0f));
+		//model = glm::rotate(model, deltaTime * glm::pi<float>() / 2, glm::vec3(0.0f, 1.0f, 0.0f));
 
 		view = glm::lookAt(cameraPos, cameraPos + cameraFront, cameraUp);
 
@@ -435,4 +479,9 @@ unsigned int loadTexture(char const * path)
 	}
 
 	return textureID;
+}
+
+glm::vec3 calc_normals(glm::vec3 first, glm::vec3 second) {
+	return glm::cross(first, second);
+
 }
