@@ -151,15 +151,25 @@ int main()
 	for (int i = 0; i < sizeof(prism_ind) / sizeof(prism_ind[0]); i = i + 3) {
 		//glm::vec3 first = glm::vec3(prism[(i+1)*6]-prism[i*6], prism[(i + 1) * 6+1] - prism[i * 6+1], prism[(i + 1) * 6+2] - prism[i * 6+2]);
 		//glm::vec3 second = glm::vec3(prism[(i + 2) * 6] - prism[(i+1) * 6], prism[(i + 2) * 6 + 1] - prism[(i+1) * 6 + 1], prism[(i + 2) * 6 + 2] - prism[(i+1) * 6 + 2]);
-		glm::vec3 first = glm::vec3(prism[prism_ind[i*3+1]] - prism[prism_ind[i*3]], prism[prism_ind[i * 3 + 1]+1] - prism[prism_ind[i * 3]+1], prism[prism_ind[i * 3 + 1]+2] - prism[prism_ind[i * 3]+2]);
-		glm::vec3 second = glm::vec3(prism[0] - prism[36], prism[1] - prism[37], prism[2] - prism[38]);
-		temp = cross(first, second); glm::vec3(prism[prism_ind[i * 3 + 2]] - prism[prism_ind[i * 3+1]], prism[prism_ind[i * 3 + 2] + 1] - prism[prism_ind[i * 3+1] + 1], prism[prism_ind[i * 3 + 2] + 2] - prism[prism_ind[i * 3+1] + 2]);
+		std::cout << i << std::endl;
+		glm::vec3 first = glm::vec3(prism[prism_ind[i+1]*6] - prism[prism_ind[i]*6], prism[prism_ind[i  + 1]*6+1] - prism[prism_ind[i ]*6+1], prism[prism_ind[i  + 1]*6+2] - prism[prism_ind[i ]*6+2]);
+		glm::vec3 second = glm::vec3(prism[prism_ind[i + 2] * 6] - prism[prism_ind[i +1] * 6], prism[prism_ind[i + 2] * 6 + 1] - prism[prism_ind[i +1] * 6 + 1], prism[prism_ind[i + 2] * 6 + 2] - prism[prism_ind[i +1] * 6 + 2]);
+		temp = cross(first, second);
 		std::cout << temp[0] << ", " << temp[1] << ", " << temp[2] << std::endl;
-		++count;
+
+		prism[prism_ind[i] * 6 + 3] = temp[0];
+		prism[prism_ind[i] * 6 + 4] = temp[1];
+		prism[prism_ind[i] * 6 + 5] = temp[2];
+
+		prism[prism_ind[i+1] * 6 + 3] = temp[0];
+		prism[prism_ind[i+1] * 6 + 4] = temp[1];
+		prism[prism_ind[i+1] * 6 + 5] = temp[2];
+
+		prism[prism_ind[i+2] * 6 + 3] = temp[0];
+		prism[prism_ind[i+2] * 6 + 4] = temp[1];
+		prism[prism_ind[i+2] * 6 + 5] = temp[2];
 
 	}
-	std::cout << sizeof(prism_ind)/ sizeof(prism_ind[0]);
-
 
 	float skyboxVertices[] = {
 		// positions          
