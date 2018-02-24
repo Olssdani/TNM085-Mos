@@ -94,7 +94,7 @@ for a = X
 
                 % Kollar om strålen är i mediumet eller inte
                 if first
-                    angle_in = acosd(dot(ljus, norm2)/(norm(ljus)*norm(norm2)));
+                    angle_in = acosd(dot(ljus, norm2)/(norm(ljus)*norm(norm2)))
                     [K, M, angle_out] = line_ekv_first(angle_in, Y, a, n1, n2);
                     first = false;
                 elseif second
@@ -117,7 +117,7 @@ for a = X
 
                 % Kollar om strålen är i mediumet eller inte
                 if first
-                    angle_in = acosd(dot(ljus, norm3)/(norm(ljus)*norm(norm3)));
+                    angle_in = acosd(dot(ljus, norm3)/(norm(ljus)*norm(norm3)))
                     [K, M, angle_out] = line_ekv_first(angle_in, Y, a, n1, n2);
                     first = false;
                 elseif second

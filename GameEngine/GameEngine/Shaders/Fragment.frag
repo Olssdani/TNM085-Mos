@@ -22,14 +22,3 @@ void main()
 	//FragColor = vec4(texture(skybox, R).rgb * rim, 1.0);
 	FragColor =mix(refractionColor,reflectionColor,rim);
 } 
-/*void main()
-{             
-		 vec3 I = normalize(Position-cameraPos);
-		 vec3 R = reflect(I, normalize(Normal));
-
-		// float rim = pow(1.0-max(dot(-I, normalize(Normal)), 0.0), 8);
-
-		 //FragColor = vec4(texture(skybox, R).rgb * rim, 1.0);
-
-		  FragColor = vec4(texture(skybox, R).rgb, 1.0);
-}*/

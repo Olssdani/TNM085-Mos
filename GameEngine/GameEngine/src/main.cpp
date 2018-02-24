@@ -1,14 +1,17 @@
 #include <glad/glad.h>
+
 #include <GLFW\glfw3.h>
 #include "shader.h"
 #include <string>
 #include <vector>
 #include <iostream>
 #include "glm/glm.hpp"
-#include "glm/gtc/matrix_transform.hpp"
+
 #include "glm/gtc/type_ptr.hpp"
 #define STB_IMAGE_IMPLEMENTATION
 #include "stb_image.h"
+#include "glm/gtc/matrix_transform.hpp"
+#include "Prisma.hpp"
 
 //Funktion Def
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
@@ -17,6 +20,8 @@ void processInput(GLFWwindow *window);
 unsigned int loadCubemap(std::vector<std::string> faces);
 unsigned int loadTexture(char const * path);
 void updateNormals(float vert[], const unsigned int ind[], const unsigned int length);
+void Euler(double x, double y, double w, double &X, double &Y);
+void TwoDRot(float prism[], int length);
 
 //SKärmstorlek
 const unsigned int SCR_WIDTH = 800;
@@ -31,7 +36,7 @@ float yaw = -90.0f;
 float pitch = 0.0f;
 
 // GLobala variabler för cameran
-glm::vec3 cameraPos = glm::vec3(0.0f, 0.0f, 0.9f);
+glm::vec3 cameraPos = glm::vec3(0.0f, 1.0f, 0.0f);
 glm::vec3 cameraFront = glm::vec3(0.0f, 0.0f, -1.0f);
 glm::vec3 cameraUp = glm::vec3(0.0f, 1.0f, 0.0f);
 
@@ -51,9 +56,6 @@ int main()
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
 	// Avaktiverar gammal funktionalitet så vi får tillgång till ny
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-	
-	//Denna raden behövs för mac!!!!!!!!!!!!!!
-	//glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
 	
 	//Skapar pointer till fönstret objektet
 	//GLFWwindow* window = glfwCreateWindow(SCR_WIDTH, SCR_HEIGHT, "Prisma", glfwGetPrimaryMonitor(), NULL); //Fullscreen men blev fel med viewport, har inte orkat lösa de än
@@ -79,6 +81,7 @@ int main()
 		std::cout << "Failed to initialize GLAD" << std::endl;
 		return -1;
 	}
+	prisma pri(1.0, 1.51);
 	
 	// Här byggs vår shaders
 	Shader prismShader("Shaders/Vertex.vert", "Shaders/Fragment.frag");
@@ -111,6 +114,11 @@ int main()
 		-0.3f, -0.4f, -0.1732f,		0.0f, 0.0f, 0.0f,			//16
 		-0.3f, -0.4f, -0.1732f,		0.0f, 0.0f, 0.0f,			//17
 	};
+
+	for (int i = 0; i < sizeof(prism) / sizeof(prism[0]); i++) {
+		prism[i] = prism[i] / 10.0f;
+		std::cout << prism[i] << std::endl;
+	}
 	//Vår indices som specifikserar i vilken ordning trianglarna målas upp
 	unsigned int prism_ind[24] = {
 		0, 3, 6,//Top
@@ -172,29 +180,37 @@ int main()
 	};
 
 	float beam[] = {
-	0.01f, 0.0f, -1.0f,		0.0f, 0.0f, 0.0f,
-	0.01f, 0.0f, -1.0f,		0.0f, 0.0f, 0.0f,
+	-1.f, 0.0f, 0.0010f,	0.0f, 0.0f, 0.0f,
+	-1.0f, 0.0f, 0.0010f,	0.0f, 0.0f, 0.0f,
 
-	0.01f, 0.0f, 0.0f,		0.0f, 0.0f, 0.0f,
-	0.01f, 0.0f, 0.0f,		0.0f, 0.0f, 0.0f,
+	0.0f, 0.0f, 0.001f,		0.0f, 0.0f, 0.0f,
+	0.0f, 0.0f, 0.001f,		0.0f, 0.0f, 0.0f,
 
-	-0.01f, 0.0f, 0.0f,		0.0f, 0.0f, 0.0f,
-	-0.01f, 0.0f, 0.0f,		0.0f, 0.0f, 0.0f,
+	0.0f, 0.0f, -0.0010f,	0.0f, 0.0f, 0.0f,
+	0.0f, 0.0f, -0.0010f,	0.0f, 0.0f, 0.0f,
 
-	-0.01f, 0.0f, -1.0f,	0.0f, 0.0f, 0.0f
-	-0.01f, 0.0f, -1.0f,	0.0f, 0.0f, 0.0f
+	-1.0f, 0.0f, -0.0010f,	0.0f, 0.0f, 0.0f,
+	-1.0f, 0.0f, -0.0010f,	0.0f, 0.0f, 0.0f
 	};
 
 	unsigned int beam_ind[]{
-	0,2,4,
-	0,4,6
-
-
+	2,4,0,
+	4,6,0,
+	3,1,5,
+	5,1,7
 	};
 
 	updateNormals(beam, beam_ind, sizeof(beam_ind) / sizeof(beam_ind[0]));
 
+	float out[] = {
+	0.0f, 0.0f, 0.0f,	0.0f, 1.0f, 0.0f,
+	1.0f, 0.0f, 0.5f,	0.0f, 1.0f, 0.0f,
+	1.0f, 0.0f, -0.5f,	0.0f, 1.0f, 0.0f
+	};
 
+	unsigned int out_ind[]{
+		0,1,2,
+	};
 	// Våra olika bufferar. Dessa gör så vi kan skicka stora delar vertiser samtidigt så vi slipper skicka 1 i taget
 	//VBO(vertex buffer object) skickar våra vertriser till GPU'n
 	//Alla buffrar måste vara unsigned ints
@@ -209,7 +225,7 @@ int main()
 
 	//Binder Buffern till det sóm den skall bindas till. I detta fall prismat
 	glBindBuffer(GL_ARRAY_BUFFER, VBO);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(prism), prism, GL_STATIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(prism), prism, GL_DYNAMIC_DRAW);
 	//Knyter indeices
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(prism_ind), prism_ind, GL_STATIC_DRAW);
@@ -253,6 +269,31 @@ int main()
 	// Normals
 	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)(3 * sizeof(float)));
 	glEnableVertexAttribArray(1);
+	
+
+	//out
+	unsigned int outVBO, outVAO, outEBO;
+	glGenVertexArrays(1, &outVAO);
+
+	//Skapar ett eller flera buffer objekt
+	glGenBuffers(1, &outVBO);
+	glGenBuffers(1, &outEBO);
+
+	glBindVertexArray(outVAO);
+
+	//Binder Buffern till det sóm den skall bindas till. I detta fall prismat
+	glBindBuffer(GL_ARRAY_BUFFER, outVBO);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(out), out, GL_DYNAMIC_DRAW);
+	//Knyter indeices
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, outEBO);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(out_ind), out_ind, GL_STATIC_DRAW);
+	// Position
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)0);
+	glEnableVertexAttribArray(0);
+	// Normals
+	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)(3 * sizeof(float)));
+	glEnableVertexAttribArray(1);
+	
 	// Gör så vi har en depth buffer, dvs en z buffer så opengl vet vad som ligger bakom och framför 
 	glEnable(GL_DEPTH_TEST);
 
@@ -265,12 +306,12 @@ int main()
 	//Namn på våra bilder för kuben
 	std::vector<std::string> faces
 	{
-		"right.jpg",
-		"left.jpg",
-		"top.jpg",
-		"bottom.jpg",
-		"front.jpg",
-		"back.jpg"
+		"posx.jpg",
+		"negx.jpg",
+		"posy.jpg",
+		"negy.jpg",
+		"posz.jpg",
+		"posz.jpg"
 	};
 
 	//initering av kuben
@@ -281,19 +322,24 @@ int main()
 	//Modell och view matris
 	glm::mat4 model = glm::mat4(1.0f);//Rotationsmatrisen för prismat
 	glm::mat4 view = glm::mat4(1.0f); // Vy matrisen
-	model = glm::scale(model, glm::vec3(0.1f));
+	//model = glm::scale(model, glm::vec3(0.1f));
 	projection = glm::perspective(glm::radians(45.0f), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 100.0f);//Projektionsmatrisen
+
+
 
 	// Sätter att bara framsidan syns
 	//glEnable(GL_CULL_FACE);
 	//glCullFace(GL_FRONT);
 	//glFrontFace(GL_CW);
+	glDisable(GL_CULL_FACE);
 	
+	//
+	float X[3] = {};
+	float Y[3] = {};
+
 	while (!glfwWindowShouldClose(window))
 	{
 		//Knyter om våra shader vilket betyder att vi kan ändra i shaderna i realtid
-		Shader prismShader("Shaders/Vertex.vert", "Shaders/Fragment.frag");
-		Shader skyboxShader("Shaders/skybox_vertex.vert", "Shaders/skybox_fragment.frag");
 		Shader beamShader("Shaders/beam_vertex.vert", "Shaders/beam_fragment.frag");
 		// Beräknar fram tiden sen sist gång vi loppade
 		float currentFrame = glfwGetTime();
@@ -313,6 +359,25 @@ int main()
 		//Updaterar vy matrisen
 		view = glm::lookAt(cameraPos, cameraPos + cameraFront, cameraUp);
 
+
+		TwoDRot(prism, sizeof(prism) / sizeof(prism[0]));
+		updateNormals(prism, prism_ind, sizeof(prism_ind) / sizeof(prism_ind[0]));
+		X[0] = prism[0];
+		Y[0] = prism[2];
+
+		X[1] = prism[18];
+		Y[1] = prism[20];
+
+		X[2] = prism[36];
+		Y[2] = prism[38];
+		pri.update(X,Y);
+
+
+		glBindVertexArray(VAO);
+		//Binder Buffern till det sóm den skall bindas till. I detta fall prismat
+		glBindBuffer(GL_ARRAY_BUFFER, VBO);
+		glBufferData(GL_ARRAY_BUFFER, sizeof(prism), prism, GL_STATIC_DRAW);
+
 		//Startar prismat shadern
 		prismShader.use();
 		//Skickar en massa skit till shadern
@@ -324,14 +389,42 @@ int main()
 		glBindVertexArray(VAO);		
 		glDrawElements(GL_TRIANGLES, 8 * 3, GL_UNSIGNED_INT, 0);
 
-		// beam
-	
 		beamShader.use();
 		glUniformMatrix4fv(glGetUniformLocation(beamShader.ID, "view"), 1, GL_FALSE, &view[0][0]);
 		glUniformMatrix4fv(glGetUniformLocation(beamShader.ID, "projection"), 1, GL_FALSE, &projection[0][0]);
+		glUniform3fv(glGetUniformLocation(beamShader.ID, "cameraPos"), 1, &cameraPos[0]);
 		// skybox cube
 		glBindVertexArray(beamVAO);
 		glDrawElements(GL_TRIANGLES, 12, GL_UNSIGNED_INT, 0);
+		// beam
+		if (pri.light_out) {
+			out[0] = pri.second_hit.x;
+			out[2] = pri.second_hit.y;
+
+			out[6] = pri.pos_out.x;
+			out[8] = pri.pos_out.y+0.1;
+
+			out[12] = pri.pos_out.x;
+			out[14] = pri.pos_out.y-0.1;
+
+			std::cout << std::endl;
+			glBindVertexArray(outVAO);
+
+			//Binder Buffern till det sóm den skall bindas till. I detta fall prismat
+			glBindBuffer(GL_ARRAY_BUFFER, outVBO);
+			glBufferData(GL_ARRAY_BUFFER, sizeof(out), out, GL_DYNAMIC_DRAW);
+
+
+			beamShader.use();
+			glUniformMatrix4fv(glGetUniformLocation(beamShader.ID, "view"), 1, GL_FALSE, &view[0][0]);
+			glUniformMatrix4fv(glGetUniformLocation(beamShader.ID, "projection"), 1, GL_FALSE, &projection[0][0]);
+			glUniform3fv(glGetUniformLocation(beamShader.ID, "cameraPos"), 1, &cameraPos[0]);
+		
+			glBindVertexArray(outVAO);
+			glDrawElements(GL_TRIANGLES, 3, GL_UNSIGNED_INT, 0);
+
+		}
+		
 		
 		// draw skybox as last
 		glDepthFunc(GL_LEQUAL);  // change depth function so depth test passes when values are equal to depth buffer's content
@@ -354,7 +447,7 @@ int main()
 	}
 
 	// optional: de-allocate all resources once they've outlived their purpose:
-	// ------------------------------------------------------------------------
+	// 
 	glDeleteVertexArrays(1, &VAO);
 	glDeleteBuffers(1, &VBO);
 	glDeleteBuffers(1, &EBO);
@@ -506,7 +599,6 @@ void updateNormals(float vert [], const unsigned int ind[], const unsigned int l
 		glm::vec3 second = glm::vec3(vert[ind[i + 2] * 6] - vert[ind[i + 1] * 6], vert[ind[i + 2] * 6 + 1] - vert[ind[i + 1] * 6 + 1], vert[ind[i + 2] * 6 + 2] - vert[ind[i + 1] * 6 + 2]);
 		temp = cross(first, second);
 
-		std::cout << temp[0] << " " << temp[1] << " " << temp[2] << std::endl;
 		vert[ind[i] * 6 + 3] = temp[0];
 		vert[ind[i] * 6 + 4] = temp[1];
 		vert[ind[i] * 6 + 5] = temp[2];
@@ -519,4 +611,61 @@ void updateNormals(float vert [], const unsigned int ind[], const unsigned int l
 		vert[ind[i + 2] * 6 + 4] = temp[1];
 		vert[ind[i + 2] * 6 + 5] = temp[2];
 	}
+}
+
+void TwoDRot(float prism[], int length)
+{
+	int i = 0;
+	double X;
+	double Y;
+
+	while (i < length)
+	{
+
+		Euler(prism[i], prism[i + 2], deltaTime * glm::pi<float>(), X, Y);
+
+		prism[i] = X;
+		prism[i + 2] = Y;
+
+		i = i + 6;
+	}
+}
+
+void Euler(double x, double y, double w, double &X, double &Y)
+{
+	double theta;
+	double thetaN;
+	double h = 0.01;
+
+
+	double r = sqrt(pow(x, 2) + pow(y, 2));
+	const double PI = 3.14159265358979323846;
+
+	if (x > 0)
+	{
+		theta = atan(y / x);
+	}
+	else if (x < 0 && y >= 0)
+	{
+		theta = atan(y / x) + PI;
+	}
+	else if (x < 0 && y < 0)
+	{
+		theta = atan(y / x) - PI;
+	}
+	else if (x == 0 && y > 0)
+	{
+		theta = PI / 2;
+	}
+	else
+	{
+		theta = -PI / 2;
+	}
+
+	//Euler
+	thetaN = theta + h * w;
+
+	X = r * cos(thetaN);
+	Y = r * sin(thetaN);
+
 }

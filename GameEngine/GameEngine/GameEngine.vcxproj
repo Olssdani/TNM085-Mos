@@ -69,7 +69,7 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <IncludePath>C:\Users\nille\Desktop\TNM085-Mos\GameEngine\GameEngine\Include;C:\Users\Daniel olsson\Documents\TNM085-Mos\GameEngine\GameEngine\Include;C:\Users\daniel\Documents\TNM085-Mos\GameEngine\GameEngine\Include;C:\Users\Daniel olsson\Documents\Programmering\Opengl\GameEngine\GameEngine\src;C:\Users\Daniel olsson\Documents\Programmering\Opengl\GameEngine\GameEngine\Include;$(IncludePath)</IncludePath>
+    <IncludePath>C:\Users\nille\Desktop\TNM085-Mos\GameEngine\GameEngine\src;C:\Users\nille\Desktop\TNM085-Mos\GameEngine\GameEngine\Include;C:\Users\Daniel olsson\Documents\TNM085-Mos\GameEngine\GameEngine\Include;C:\Users\daniel\Documents\TNM085-Mos\GameEngine\GameEngine\Include;C:\Users\Daniel olsson\Documents\Programmering\Opengl\GameEngine\GameEngine\src;C:\Users\Daniel olsson\Documents\Programmering\Opengl\GameEngine\GameEngine\Include;$(IncludePath)</IncludePath>
     <LibraryPath>C:\Users\nille\Desktop\TNM085-Mos\GameEngine\GameEngine\Libs;C:\Users\Daniel olsson\Documents\TNM085-Mos\GameEngine\GameEngine\Libs;C:\Users\daniel\Documents\TNM085-Mos\GameEngine\GameEngine\Libs;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -77,7 +77,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>C:\Users\nille\Desktop\TNM085-Mos\GameEngine\GameEngine\Include;C:\Users\Daniel olsson\Documents\TNM085-Mos\GameEngine\GameEngine\Include;C:\Users\daniel\Documents\TNM085-Mos\GameEngine\GameEngine\Include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Users\nille\Desktop\TNM085-Mos\GameEngine\GameEngine\src;C:\Users\nille\Desktop\TNM085-Mos\GameEngine\GameEngine\Include;C:\Users\Daniel olsson\Documents\TNM085-Mos\GameEngine\GameEngine\Include;C:\Users\daniel\Documents\TNM085-Mos\GameEngine\GameEngine\Include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <AdditionalDependencies>opengl32.lib;glfw3.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
@@ -120,6 +120,9 @@
   <ItemGroup>
     <ClInclude Include="Include\glad\glad.h" />
     <ClInclude Include="Include\KHR\khrplatform.h" />
+    <ClInclude Include="src\Line_Equation.h" />
+    <ClInclude Include="src\pos_2D.h" />
+    <ClInclude Include="src\Prisma.hpp" />
     <ClInclude Include="src\shader.h" />
   </ItemGroup>
   <ItemGroup>
@@ -130,7 +133,10 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\glad.c" />
+    <ClCompile Include="src\Line_Equation.cpp" />
     <ClCompile Include="src\main.cpp" />
+    <ClCompile Include="src\pos_2D.cpp" />
+    <ClCompile Include="src\PRISMA.cpp" />
     <ClCompile Include="src\shader.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
