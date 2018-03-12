@@ -13,6 +13,9 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Resource Files\NewFilter1">
+      <UniqueIdentifier>{a702b702-d4f6-48df-b436-c2b6863c755d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Include\glad\glad.h">
@@ -47,6 +50,18 @@
     <None Include="Shaders\skybox_vertex.glsl">
       <Filter>Resource Files</Filter>
     </None>
+    <None Include="Shaders\beam_fragment.frag">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="Shaders\beam_vertex.vert">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="Shaders\rainbow.frag">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="Shaders\rainbow.vert">
+      <Filter>Resource Files</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\glad.c">
@@ -58,13 +73,13 @@
     <ClCompile Include="src\shader.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\Line_Equation.cpp">
-      <Filter>Header Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\PRISMA.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\pos_2D.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Line_Equation.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

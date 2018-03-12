@@ -87,6 +87,7 @@ int main()
 	Shader prismShader("Shaders/Vertex.vert", "Shaders/Fragment.frag");
 	Shader skyboxShader("Shaders/skybox_vertex.vert", "Shaders/skybox_fragment.frag");
 	Shader beamShader("Shaders/beam_vertex.vert", "Shaders/beam_fragment.frag");
+	Shader rainbow("Shaders/rainbow.vert", "Shaders/rainbow.frag");
 	//Våra vertrices för prismat
 	float prism[] = {
 		// positions				// Normal			/texture
@@ -117,7 +118,7 @@ int main()
 
 	for (int i = 0; i < sizeof(prism) / sizeof(prism[0]); i++) {
 		prism[i] = prism[i] / 10.0f;
-		std::cout << prism[i] << std::endl;
+		//std::cout << prism[i] << std::endl;
 	}
 	//Vår indices som specifikserar i vilken ordning trianglarna målas upp
 	unsigned int prism_ind[24] = {
@@ -180,7 +181,7 @@ int main()
 	};
 
 	float beam[] = {
-	-1.f, 0.0f, 0.0010f,	0.0f, 0.0f, 0.0f,
+	-1.0f, 0.0f, 0.0010f,	0.0f, 0.0f, 0.0f,
 	-1.0f, 0.0f, 0.0010f,	0.0f, 0.0f, 0.0f,
 
 	0.0f, 0.0f, 0.001f,		0.0f, 0.0f, 0.0f,
@@ -202,13 +203,43 @@ int main()
 
 	updateNormals(beam, beam_ind, sizeof(beam_ind) / sizeof(beam_ind[0]));
 
-	float out[] = {
-	0.0f, 0.0f, 0.0f,	0.0f, 1.0f, 0.0f,
-	1.0f, 0.0f, 0.5f,	0.0f, 1.0f, 0.0f,
-	1.0f, 0.0f, -0.5f,	0.0f, 1.0f, 0.0f
+	/*float out[] = {
+	0.0f, 0.0f, 0.0f,		0.0f, 1.0f, 0.0f,		0.5f, 0.0f,
+	1.0f, 0.0f, 0.5f,		0.0f, 1.0f, 0.0f,		1.0f, 0.0f,
+	1.0f, 0.0f, -0.5f,		1.0f, 0.0f, 0.0f,		1.0f, 1.0f
 	};
 
 	unsigned int out_ind[]{
+		0,1,2,
+	};*/
+
+	float out[] = {
+		0.0f, 0.0f, 0.0f,		1.0f, 1.0f, 1.0f, // 0 Origo vit	
+		1.0f, 0.0f, 0.3f,		1.0f, 0.0f, 1.0f,// 1 Lila
+		1.0f, 0.0f, 0.20f,		0.0f, 0.0f, 1.0f,// 2 Blå
+		1.0f, 0.0f, 0.10f,		0.0f, 1.0f, 1.0f,//3 Grön
+		1.0f, 0.0f, 0.0f,		0.0f, 1.0f, 0.0f,//4 Gul
+		1.0f, 0.0f, -0.1f,		1.0f, 1.0f, 0.0f,//5 Orange
+		1.0f, 0.0f, -0.2f,		1.0f, 0.0f, 0.0f,// 6 röd
+		1.0f, 0.0f, -0.3f,		1.0f, 0.0f, 1.0f,// 7 Lila
+	};
+
+	unsigned int out_ind[]{
+
+		0,2,1,
+		0,3,2,
+		0,4,3,
+		0,5,4,
+		0,6,5,
+		0,7,6
+	};
+	float middle[] = {
+		0.0f, 0.050f, 0.0f,	0.0f, 1.0f, 0.0f,
+		0.0f, 0.050f, 0.0f,	0.0f, 1.0f, 0.0f,
+		0.0f, 0.050f, 0.0f,	0.0f, 1.0f, 0.0f
+	};
+
+	unsigned int middle_ind[]{
 		0,1,2,
 	};
 	// Våra olika bufferar. Dessa gör så vi kan skicka stora delar vertiser samtidigt så vi slipper skicka 1 i taget
@@ -235,6 +266,8 @@ int main()
 	// Normals
 	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)(3 * sizeof(float)));
 	glEnableVertexAttribArray(1);
+
+
 
 	// skybox
 	unsigned int skyboxVAO, skyboxVBO;
@@ -287,13 +320,36 @@ int main()
 	//Knyter indeices
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, outEBO);
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(out_ind), out_ind, GL_STATIC_DRAW);
+	
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)0);
+	glEnableVertexAttribArray(0);
+	// color attribute
+	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)(3 * sizeof(float)));
+	glEnableVertexAttribArray(1);
+
+
+	//out
+	unsigned int middleVBO, middleVAO, middleEBO;
+	glGenVertexArrays(1, &middleVAO);
+
+	//Skapar ett eller flera buffer objekt
+	glGenBuffers(1, &middleVBO);
+	glGenBuffers(1, &middleEBO);
+
+	glBindVertexArray(middleVAO);
+
+	//Binder Buffern till det sóm den skall bindas till. I detta fall prismat
+	glBindBuffer(GL_ARRAY_BUFFER, middleVBO);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(middle), middle, GL_DYNAMIC_DRAW);
+	//Knyter indeices
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, middleEBO);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(middle_ind), middle_ind, GL_STATIC_DRAW);
 	// Position
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)0);
 	glEnableVertexAttribArray(0);
 	// Normals
 	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)(3 * sizeof(float)));
 	glEnableVertexAttribArray(1);
-	
 	// Gör så vi har en depth buffer, dvs en z buffer så opengl vet vad som ligger bakom och framför 
 	glEnable(GL_DEPTH_TEST);
 
@@ -311,7 +367,7 @@ int main()
 		"posy.jpg",
 		"negy.jpg",
 		"posz.jpg",
-		"posz.jpg"
+		"negz.jpg"
 	};
 
 	//initering av kuben
@@ -337,10 +393,42 @@ int main()
 	float X[3] = {};
 	float Y[3] = {};
 
+	unsigned int texture;
+	glGenTextures(1, &texture);
+	glBindTexture(GL_TEXTURE_2D, texture); // all upcoming GL_TEXTURE_2D operations now have effect on this texture object
+										   // set the texture wrapping parameters
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);	// set texture wrapping to GL_REPEAT (default wrapping method)
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+	// set texture filtering parameters
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	// load image, create texture and generate mipmaps
+	int width, height, nrChannels;
+	// The FileSystem::getPath(...) is part of the GitHub repository so we can find files on any IDE/platform; replace it with your own image path.
+	unsigned char *data = stbi_load("spec.jpg", &width, &height, &nrChannels, 0);
+
+	//std::cout << data;
+	if (data)
+	{
+	
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
+		std::cout << "faaan";
+		glGenerateMipmap(GL_TEXTURE_2D);
+
+	}
+	else
+	{
+		std::cout << "Failed to load texture" << std::endl;
+	}
+	stbi_image_free(data);
+
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	while (!glfwWindowShouldClose(window))
 	{
+		Shader rainbow("Shaders/rainbow.vert", "Shaders/rainbow.frag");
 		//Knyter om våra shader vilket betyder att vi kan ändra i shaderna i realtid
-		Shader beamShader("Shaders/beam_vertex.vert", "Shaders/beam_fragment.frag");
+		//Shader beamShader("Shaders/beam_vertex.vert", "Shaders/beam_fragment.frag");
 		// Beräknar fram tiden sen sist gång vi loppade
 		float currentFrame = glfwGetTime();
 		deltaTime = currentFrame - lastFrame;
@@ -355,7 +443,7 @@ int main()
 
 		//Rotation av prismat
 		//model = glm::rotate(model, deltaTime * glm::pi<float>() / 10, glm::vec3(0.0f, 1.0f, 0.0f));
-		
+
 		//Updaterar vy matrisen
 		view = glm::lookAt(cameraPos, cameraPos + cameraFront, cameraUp);
 
@@ -370,7 +458,7 @@ int main()
 
 		X[2] = prism[36];
 		Y[2] = prism[38];
-		pri.update(X,Y);
+		pri.update(X, Y);
 
 
 		glBindVertexArray(VAO);
@@ -386,7 +474,7 @@ int main()
 		glUniformMatrix4fv(glGetUniformLocation(prismShader.ID, "projection"), 1, GL_FALSE, &projection[0][0]);
 		glUniform3fv(glGetUniformLocation(prismShader.ID, "cameraPos"), 1, &cameraPos[0]);
 		//Binder vertexen och sedan ritar dem
-		glBindVertexArray(VAO);		
+		glBindVertexArray(VAO);
 		glDrawElements(GL_TRIANGLES, 8 * 3, GL_UNSIGNED_INT, 0);
 
 		beamShader.use();
@@ -397,33 +485,36 @@ int main()
 		glBindVertexArray(beamVAO);
 		glDrawElements(GL_TRIANGLES, 12, GL_UNSIGNED_INT, 0);
 		// beam
-		if (pri.light_out) {
-			out[0] = pri.second_hit.x;
-			out[2] = pri.second_hit.y;
+		
 
-			out[6] = pri.pos_out.x;
-			out[8] = pri.pos_out.y+0.1;
+		/*if (pri.light_out_middle){
+			middle[0] = pri.first_hit.x;
+			middle[2] = pri.first_hit.y;
 
-			out[12] = pri.pos_out.x;
-			out[14] = pri.pos_out.y-0.1;
+			middle[6] = pri.second_hit.x;
+			middle[8] = pri.second_hit.y + 0.001;
 
-			std::cout << std::endl;
-			glBindVertexArray(outVAO);
+			middle[12] = pri.second_hit.x;
+			middle[14] = pri.second_hit.y - 0.001;
+
+
+			//		std::cout << "X: " << middle[0] <<std::endl;
+			glBindVertexArray(middleVAO);
 
 			//Binder Buffern till det sóm den skall bindas till. I detta fall prismat
-			glBindBuffer(GL_ARRAY_BUFFER, outVBO);
-			glBufferData(GL_ARRAY_BUFFER, sizeof(out), out, GL_DYNAMIC_DRAW);
+			glBindBuffer(GL_ARRAY_BUFFER, middleVBO);
+			glBufferData(GL_ARRAY_BUFFER, sizeof(middle), middle, GL_DYNAMIC_DRAW);
 
 
 			beamShader.use();
 			glUniformMatrix4fv(glGetUniformLocation(beamShader.ID, "view"), 1, GL_FALSE, &view[0][0]);
 			glUniformMatrix4fv(glGetUniformLocation(beamShader.ID, "projection"), 1, GL_FALSE, &projection[0][0]);
 			glUniform3fv(glGetUniformLocation(beamShader.ID, "cameraPos"), 1, &cameraPos[0]);
-		
-			glBindVertexArray(outVAO);
-			glDrawElements(GL_TRIANGLES, 3, GL_UNSIGNED_INT, 0);
 
-		}
+			glBindVertexArray(middleVAO);
+			glDrawElements(GL_TRIANGLES, 3, GL_UNSIGNED_INT, 0);
+			}*/
+		
 		
 		
 		// draw skybox as last
@@ -437,6 +528,54 @@ int main()
 		glBindTexture(GL_TEXTURE_CUBE_MAP, cubemapTexture);
 		glDrawArrays(GL_TRIANGLES, 0, 36);
 		
+
+		if (pri.light_out) {
+			out[0] = pri.second_hit.x;
+			out[2] = pri.second_hit.y;
+
+			out[6] = pri.pos_out.x;
+			out[8] = pri.pos_out.y + 0.03;
+
+			out[12] = pri.pos_out.x;
+			out[14] = pri.pos_out.y + 0.02;
+
+			out[18] = pri.pos_out.x;
+			out[20] = pri.pos_out.y + 0.01;
+
+			out[24] = pri.pos_out.x;
+			out[26] = pri.pos_out.y;
+
+			out[30] = pri.pos_out.x;
+			out[32] = pri.pos_out.y - 0.01;
+
+			out[36] = pri.pos_out.x;
+			out[38] = pri.pos_out.y - 0.02;
+
+			out[42] = pri.pos_out.x;
+			out[44] = pri.pos_out.y - 0.03;
+
+			glBindVertexArray(outVAO);
+
+			//Binder Buffern till det sóm den skall bindas till. I detta fall prismat
+			glBindBuffer(GL_ARRAY_BUFFER, outVBO);
+			glBufferData(GL_ARRAY_BUFFER, sizeof(out), out, GL_DYNAMIC_DRAW);
+
+
+			rainbow.use();
+
+			glUniformMatrix4fv(glGetUniformLocation(rainbow.ID, "view"), 1, GL_FALSE, &view[0][0]);
+			glUniformMatrix4fv(glGetUniformLocation(rainbow.ID, "projection"), 1, GL_FALSE, &projection[0][0]);
+			glUniform3fv(glGetUniformLocation(rainbow.ID, "cameraPos"), 1, &cameraPos[0]);
+
+			glBindVertexArray(outVAO);
+			glActiveTexture(GL_TEXTURE0);
+			glBindTexture(GL_TEXTURE_2D, texture);
+
+			glDrawElements(GL_TRIANGLES, 21, GL_UNSIGNED_INT, 0);
+
+
+
+		}
 		//Återställas z buffer typ
 		glDepthFunc(GL_LESS); // set depth function back to default
 
@@ -635,7 +774,7 @@ void Euler(double x, double y, double w, double &X, double &Y)
 {
 	double theta;
 	double thetaN;
-	double h = 0.01;
+	double h = 0.1;
 
 
 	double r = sqrt(pow(x, 2) + pow(y, 2));

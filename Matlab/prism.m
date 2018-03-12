@@ -21,6 +21,7 @@ Y_out = zeros(1,length(X));
 K_1 = (prisma(2,1)-prisma(2,2))/(prisma(1,1)-prisma(1,2));
 M_1 =prisma(2,1)-K_1*prisma(1,1);
 
+
 % Andra väggen
 K_2 = (prisma(2,2)-prisma(2,3))/(prisma(1,2)-prisma(1,3));
 M_2 =prisma(2,2)-K_2*prisma(1,2);
@@ -34,13 +35,13 @@ M_3 =prisma(2,3)-K_3*prisma(1,3);
 ljus = [1,0];
 
 % Första väggens normalen
-norm1 = [K_1,1]
+norm1 = [K_1,1];
 
 % Första väggens normalen
-norm2 = [K_2, 1]
+norm2 = [K_2, 1];
 
 % Första väggens normalen
-norm3 = [K_3, 1]
+norm3 = [K_3, 1];
 
 %% Brytningsloopen
 % Denna söker efter vilket vägg som strålen prickar och sedan plockar
@@ -74,7 +75,7 @@ for a = X
                     [K, M, angle_out] = line_ekv_first(angle_in, Y, a, n1, n2);
                     first = false;
                 elseif second
-                    angle = 60-angle_out
+                    angle = 60-angle_out;
                     second = false;
                     if(abs(angle) <= crit_angle)
                         [K, M, angle_out] = line_ekv_second(angle,angle_in,angle_out, Y, a, n2, n1);
@@ -94,11 +95,11 @@ for a = X
 
                 % Kollar om strålen är i mediumet eller inte
                 if first
-                    angle_in = acosd(dot(ljus, norm2)/(norm(ljus)*norm(norm2)))
+                    angle_in = acosd(dot(ljus, norm2)/(norm(ljus)*norm(norm2)));
                     [K, M, angle_out] = line_ekv_first(angle_in, Y, a, n1, n2);
                     first = false;
                 elseif second
-                    angle = 60-angle_out
+                    angle = 60-angle_out;
                     second = false;
                     if(abs(angle) <= crit_angle)
                         [K, M, angle_out] = line_ekv_second(angle,angle_in,angle_out, Y, a, n2, n1);
@@ -117,11 +118,11 @@ for a = X
 
                 % Kollar om strålen är i mediumet eller inte
                 if first
-                    angle_in = acosd(dot(ljus, norm3)/(norm(ljus)*norm(norm3)))
+                    angle_in = acosd(dot(ljus, norm3)/(norm(ljus)*norm(norm3)));
                     [K, M, angle_out] = line_ekv_first(angle_in, Y, a, n1, n2);
                     first = false;
                 elseif second
-                    angle = 60-angle_out
+                    angle = 60-angle_out;
                     second = false;
                     if(abs(angle) <= crit_angle)
                         [K, M, angle_out] = line_ekv_second(angle,angle_in,angle_out, Y, a, n2, n1);
@@ -156,7 +157,7 @@ plot(X,Y_out);
 grid on
 hold on
 plot(prisma(1,:),prisma(2,:));
-axis([-6 6 -6 6]);
+axis([-1 1 -1 1]);
 hold off
 
 

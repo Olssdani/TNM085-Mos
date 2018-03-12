@@ -35,7 +35,11 @@ public:
 	double angle_out =0;
 	//Om ljus kommer ut ur prismat
 	bool light_out;
+	bool light_out_middle;
 	pos_2D second_hit;
+
+	//Position där ljuset bryter
+	pos_2D first_hit;
 
 private:
 	const double PI = 3.1415926536;
@@ -44,10 +48,6 @@ private:
 	double n2 = 0;
 	//kritiska vinkeln för mediet
 	double critical_angle = 0;
-	
-	//Position där ljuset bryter
-	pos_2D first_hit;
-
 	
 	//Steglängd
 	double step = 0.0001;
@@ -60,12 +60,14 @@ private:
 	double first_angle;
 	double second_angle;
 
+	//
+	std::string riktning;
 
 	//Privata funktioner
 	//Snells lag
 	double Snells(double n1, double n2, double angle);
 	//Kollar brytningarna i prismat
-	void  first_break(Line_Equation _Line, Line_Equation &_Light, double _X);
+	void  first_break(Line_Equation _Line, Line_Equation &_Light, pos_2D &First, pos_2D &Second, double _X);
 	void  second_break(Line_Equation _Line, Line_Equation &_Light, double _X);
 	//Kolalr ifall ljuset prickar en hörnpunkt
 	bool check_ends(pos_2D pos, double _X, double _Y);

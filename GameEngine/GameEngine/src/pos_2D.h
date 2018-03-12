@@ -14,6 +14,8 @@ public:
 	//Operator to compare two positions
 	bool const operator==(const pos_2D &temp);
 
+	double euklidiean(const pos_2D &point);
+
 	double x;
 	double y;
 private:

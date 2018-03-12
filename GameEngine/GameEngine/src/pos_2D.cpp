@@ -1,6 +1,6 @@
 
 #include "pos_2D.h"
-
+#include <cmath>
 
 
 
@@ -30,4 +30,8 @@ int const pos_2D::manhatan(const pos_2D &_pos) {
 
 bool const pos_2D::operator==(const pos_2D &_pos) {
 	return (this->x == _pos.x && this->y == _pos.y);
+}
+
+double pos_2D::euklidiean(const pos_2D &point) {
+	return sqrt(pow(this->x - point.x, 2) + pow(this->y - point.y, 2));
 }

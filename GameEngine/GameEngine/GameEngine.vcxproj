@@ -126,7 +126,11 @@
     <ClInclude Include="src\shader.h" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Shaders\beam_fragment.frag" />
+    <None Include="Shaders\beam_vertex.vert" />
     <None Include="Shaders\Fragment.glsl" />
+    <None Include="Shaders\rainbow.frag" />
+    <None Include="Shaders\rainbow.vert" />
     <None Include="Shaders\skybox_fragment.glsl" />
     <None Include="Shaders\skybox_vertex.glsl" />
     <None Include="Shaders\Vertex.glsl" />

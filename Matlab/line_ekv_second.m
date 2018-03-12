@@ -1,12 +1,12 @@
 function [K,M,angle_out] = line_ekv_second(angle,start_angle,angle_ref, Y, X, n1, n2)
         
             %Snells lag
-            angle
-            start_angle
-            angle_ref
-            angle_out = snells(n1,n2, angle)
+            angle;
+            start_angle;
+            angle_ref;
+            angle_out = snells(n1,n2, angle);
             % hittar temporör punkt
-           hej= tand(angle_out-60+start_angle)
+           hej= tand(angle_out-60+start_angle);
             y_temp = Y- 0.1*tand(angle_out-60+start_angle);
             x_temp = X+0.1;
             % Räknar ut nya K och M värden

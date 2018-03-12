@@ -15,7 +15,7 @@ prism(n1,n2, Prism_kord);
 %%
 for i=0:1:1000
 
-    
+   
     for j = 1:1:4
      [X(j),Y(j)] = rot_PosLive(Prism_kord(1, j), Prism_kord(2, j), -pi/20); 
    end
@@ -28,7 +28,8 @@ for i=0:1:1000
     %x = input(prompt)
     drawnow
     plot( X, Y);
-    xlim([-5 5])
-    ylim([-5 5])
+    axis([-1 1 -1 1])
+    xlim([-1 1])
+    ylim([-1 1])
 end
 
