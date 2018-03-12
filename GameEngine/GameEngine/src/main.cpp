@@ -1,12 +1,10 @@
 #include <glad/glad.h>
-
 #include <GLFW\glfw3.h>
 #include "shader.h"
 #include <string>
 #include <vector>
 #include <iostream>
 #include "glm/glm.hpp"
-
 #include "glm/gtc/type_ptr.hpp"
 #define STB_IMAGE_IMPLEMENTATION
 #include "stb_image.h"
@@ -88,9 +86,10 @@ int main()
 	Shader skyboxShader("Shaders/skybox_vertex.vert", "Shaders/skybox_fragment.frag");
 	Shader beamShader("Shaders/beam_vertex.vert", "Shaders/beam_fragment.frag");
 	Shader rainbow("Shaders/rainbow.vert", "Shaders/rainbow.frag");
+	
 	//Våra vertrices för prismat
 	float prism[] = {
-		// positions				// Normal			/texture
+		// positions				// Normal			
 		0.0f,  0.4f, 0.34642,		0.0f, 0.0f, 0.0f,	//1		//0
 		0.0f,  0.4f, 0.34642,		0.0f, 0.0f, 0.0f,			//1
 		0.0f,  0.4f, 0.34642,		0.0f, 0.0f, 0.0f,			//2
@@ -115,10 +114,9 @@ int main()
 		-0.3f, -0.4f, -0.1732f,		0.0f, 0.0f, 0.0f,			//16
 		-0.3f, -0.4f, -0.1732f,		0.0f, 0.0f, 0.0f,			//17
 	};
-
+	//Skalar ner prismat
 	for (int i = 0; i < sizeof(prism) / sizeof(prism[0]); i++) {
 		prism[i] = prism[i] / 10.0f;
-		//std::cout << prism[i] << std::endl;
 	}
 	//Vår indices som specifikserar i vilken ordning trianglarna målas upp
 	unsigned int prism_ind[24] = {
@@ -203,16 +201,6 @@ int main()
 
 	updateNormals(beam, beam_ind, sizeof(beam_ind) / sizeof(beam_ind[0]));
 
-	/*float out[] = {
-	0.0f, 0.0f, 0.0f,		0.0f, 1.0f, 0.0f,		0.5f, 0.0f,
-	1.0f, 0.0f, 0.5f,		0.0f, 1.0f, 0.0f,		1.0f, 0.0f,
-	1.0f, 0.0f, -0.5f,		1.0f, 0.0f, 0.0f,		1.0f, 1.0f
-	};
-
-	unsigned int out_ind[]{
-		0,1,2,
-	};*/
-
 	float out[] = {
 		0.0f, 0.0f, 0.0f,		1.0f, 1.0f, 1.0f, // 0 Origo vit	
 		1.0f, 0.0f, 0.3f,		1.0f, 0.0f, 1.0f,// 1 Lila
@@ -233,15 +221,7 @@ int main()
 		0,6,5,
 		0,7,6
 	};
-	float middle[] = {
-		0.0f, 0.050f, 0.0f,	0.0f, 1.0f, 0.0f,
-		0.0f, 0.050f, 0.0f,	0.0f, 1.0f, 0.0f,
-		0.0f, 0.050f, 0.0f,	0.0f, 1.0f, 0.0f
-	};
 
-	unsigned int middle_ind[]{
-		0,1,2,
-	};
 	// Våra olika bufferar. Dessa gör så vi kan skicka stora delar vertiser samtidigt så vi slipper skicka 1 i taget
 	//VBO(vertex buffer object) skickar våra vertriser till GPU'n
 	//Alla buffrar måste vara unsigned ints
@@ -328,28 +308,7 @@ int main()
 	glEnableVertexAttribArray(1);
 
 
-	//out
-	unsigned int middleVBO, middleVAO, middleEBO;
-	glGenVertexArrays(1, &middleVAO);
-
-	//Skapar ett eller flera buffer objekt
-	glGenBuffers(1, &middleVBO);
-	glGenBuffers(1, &middleEBO);
-
-	glBindVertexArray(middleVAO);
-
-	//Binder Buffern till det sóm den skall bindas till. I detta fall prismat
-	glBindBuffer(GL_ARRAY_BUFFER, middleVBO);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(middle), middle, GL_DYNAMIC_DRAW);
-	//Knyter indeices
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, middleEBO);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(middle_ind), middle_ind, GL_STATIC_DRAW);
-	// Position
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)0);
-	glEnableVertexAttribArray(0);
-	// Normals
-	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)(3 * sizeof(float)));
-	glEnableVertexAttribArray(1);
+	
 	// Gör så vi har en depth buffer, dvs en z buffer så opengl vet vad som ligger bakom och framför 
 	glEnable(GL_DEPTH_TEST);
 
@@ -362,12 +321,12 @@ int main()
 	//Namn på våra bilder för kuben
 	std::vector<std::string> faces
 	{
-		"posx.jpg",
-		"negx.jpg",
-		"posy.jpg",
-		"negy.jpg",
-		"posz.jpg",
-		"negz.jpg"
+		"Texture/posx.jpg",
+		"Texture/negx.jpg",
+		"Texture/posy.jpg",
+		"Texture/negy.jpg",
+		"Texture/posz.jpg",
+		"Texture/negz.jpg"
 	};
 
 	//initering av kuben
@@ -389,38 +348,11 @@ int main()
 	//glFrontFace(GL_CW);
 	glDisable(GL_CULL_FACE);
 	
-	//
+	// Positoner
 	float X[3] = {};
 	float Y[3] = {};
 
-	unsigned int texture;
-	glGenTextures(1, &texture);
-	glBindTexture(GL_TEXTURE_2D, texture); // all upcoming GL_TEXTURE_2D operations now have effect on this texture object
-										   // set the texture wrapping parameters
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);	// set texture wrapping to GL_REPEAT (default wrapping method)
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-	// set texture filtering parameters
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-	// load image, create texture and generate mipmaps
-	int width, height, nrChannels;
-	// The FileSystem::getPath(...) is part of the GitHub repository so we can find files on any IDE/platform; replace it with your own image path.
-	unsigned char *data = stbi_load("spec.jpg", &width, &height, &nrChannels, 0);
 
-	//std::cout << data;
-	if (data)
-	{
-	
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
-		std::cout << "faaan";
-		glGenerateMipmap(GL_TEXTURE_2D);
-
-	}
-	else
-	{
-		std::cout << "Failed to load texture" << std::endl;
-	}
-	stbi_image_free(data);
 
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -447,7 +379,7 @@ int main()
 		//Updaterar vy matrisen
 		view = glm::lookAt(cameraPos, cameraPos + cameraFront, cameraUp);
 
-
+		//Beräknar nya postioner för prismat och updaterar dess normaler
 		TwoDRot(prism, sizeof(prism) / sizeof(prism[0]));
 		updateNormals(prism, prism_ind, sizeof(prism_ind) / sizeof(prism_ind[0]));
 		X[0] = prism[0];
@@ -458,6 +390,8 @@ int main()
 
 		X[2] = prism[36];
 		Y[2] = prism[38];
+		
+		//Updaterar prismat 
 		pri.update(X, Y);
 
 
@@ -484,38 +418,6 @@ int main()
 		// skybox cube
 		glBindVertexArray(beamVAO);
 		glDrawElements(GL_TRIANGLES, 12, GL_UNSIGNED_INT, 0);
-		// beam
-		
-
-		/*if (pri.light_out_middle){
-			middle[0] = pri.first_hit.x;
-			middle[2] = pri.first_hit.y;
-
-			middle[6] = pri.second_hit.x;
-			middle[8] = pri.second_hit.y + 0.001;
-
-			middle[12] = pri.second_hit.x;
-			middle[14] = pri.second_hit.y - 0.001;
-
-
-			//		std::cout << "X: " << middle[0] <<std::endl;
-			glBindVertexArray(middleVAO);
-
-			//Binder Buffern till det sóm den skall bindas till. I detta fall prismat
-			glBindBuffer(GL_ARRAY_BUFFER, middleVBO);
-			glBufferData(GL_ARRAY_BUFFER, sizeof(middle), middle, GL_DYNAMIC_DRAW);
-
-
-			beamShader.use();
-			glUniformMatrix4fv(glGetUniformLocation(beamShader.ID, "view"), 1, GL_FALSE, &view[0][0]);
-			glUniformMatrix4fv(glGetUniformLocation(beamShader.ID, "projection"), 1, GL_FALSE, &projection[0][0]);
-			glUniform3fv(glGetUniformLocation(beamShader.ID, "cameraPos"), 1, &cameraPos[0]);
-
-			glBindVertexArray(middleVAO);
-			glDrawElements(GL_TRIANGLES, 3, GL_UNSIGNED_INT, 0);
-			}*/
-		
-		
 		
 		// draw skybox as last
 		glDepthFunc(GL_LEQUAL);  // change depth function so depth test passes when values are equal to depth buffer's content
@@ -528,7 +430,7 @@ int main()
 		glBindTexture(GL_TEXTURE_CUBE_MAP, cubemapTexture);
 		glDrawArrays(GL_TRIANGLES, 0, 36);
 		
-
+		//Ritar utstrålen ifall den skall ritas
 		if (pri.light_out) {
 			out[0] = pri.second_hit.x;
 			out[2] = pri.second_hit.y;
@@ -568,13 +470,8 @@ int main()
 			glUniform3fv(glGetUniformLocation(rainbow.ID, "cameraPos"), 1, &cameraPos[0]);
 
 			glBindVertexArray(outVAO);
-			glActiveTexture(GL_TEXTURE0);
-			glBindTexture(GL_TEXTURE_2D, texture);
 
 			glDrawElements(GL_TRIANGLES, 21, GL_UNSIGNED_INT, 0);
-
-
-
 		}
 		//Återställas z buffer typ
 		glDepthFunc(GL_LESS); // set depth function back to default

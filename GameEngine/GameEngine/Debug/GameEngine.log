@@ -1,2 +1,32 @@
-﻿  Skipping... (no relevant changes detected)
-  main.cpp
+﻿  main.cpp
+c:\users\nille\desktop\tnm085-mos\gameengine\gameengine\src\shader.h(3): warning C4067: unexpected tokens following preprocessor directive - expected a newline
+c:\users\nille\desktop\tnm085-mos\gameengine\gameengine\src\main.cpp(116): warning C4838: conversion from 'double' to 'float' requires a narrowing conversion
+c:\users\nille\desktop\tnm085-mos\gameengine\gameengine\src\main.cpp(116): warning C4305: 'initializing': truncation from 'double' to 'float'
+c:\users\nille\desktop\tnm085-mos\gameengine\gameengine\src\main.cpp(365): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+c:\users\nille\desktop\tnm085-mos\gameengine\gameengine\src\main.cpp(465): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+c:\users\nille\desktop\tnm085-mos\gameengine\gameengine\src\main.cpp(466): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+c:\users\nille\desktop\tnm085-mos\gameengine\gameengine\src\main.cpp(468): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+c:\users\nille\desktop\tnm085-mos\gameengine\gameengine\src\main.cpp(469): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+c:\users\nille\desktop\tnm085-mos\gameengine\gameengine\src\main.cpp(471): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+c:\users\nille\desktop\tnm085-mos\gameengine\gameengine\src\main.cpp(472): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+c:\users\nille\desktop\tnm085-mos\gameengine\gameengine\src\main.cpp(474): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+c:\users\nille\desktop\tnm085-mos\gameengine\gameengine\src\main.cpp(475): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+c:\users\nille\desktop\tnm085-mos\gameengine\gameengine\src\main.cpp(477): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+c:\users\nille\desktop\tnm085-mos\gameengine\gameengine\src\main.cpp(478): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+c:\users\nille\desktop\tnm085-mos\gameengine\gameengine\src\main.cpp(480): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+c:\users\nille\desktop\tnm085-mos\gameengine\gameengine\src\main.cpp(481): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+c:\users\nille\desktop\tnm085-mos\gameengine\gameengine\src\main.cpp(483): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+c:\users\nille\desktop\tnm085-mos\gameengine\gameengine\src\main.cpp(484): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+c:\users\nille\desktop\tnm085-mos\gameengine\gameengine\src\main.cpp(486): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+c:\users\nille\desktop\tnm085-mos\gameengine\gameengine\src\main.cpp(487): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+c:\users\nille\desktop\tnm085-mos\gameengine\gameengine\src\main.cpp(566): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+c:\users\nille\desktop\tnm085-mos\gameengine\gameengine\src\main.cpp(567): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+c:\users\nille\desktop\tnm085-mos\gameengine\gameengine\src\main.cpp(571): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+c:\users\nille\desktop\tnm085-mos\gameengine\gameengine\src\main.cpp(572): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+c:\users\nille\desktop\tnm085-mos\gameengine\gameengine\src\main.cpp(573): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+c:\users\nille\desktop\tnm085-mos\gameengine\gameengine\src\main.cpp(574): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+c:\users\nille\desktop\tnm085-mos\gameengine\gameengine\src\main.cpp(576): warning C4305: 'initializing': truncation from 'double' to 'float'
+c:\users\nille\desktop\tnm085-mos\gameengine\gameengine\src\main.cpp(667): warning C4018: '<': signed/unsigned mismatch
+c:\users\nille\desktop\tnm085-mos\gameengine\gameengine\src\main.cpp(697): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+c:\users\nille\desktop\tnm085-mos\gameengine\gameengine\src\main.cpp(698): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+  GameEngine.vcxproj -> C:\Users\nille\Desktop\TNM085-Mos\GameEngine\Debug\GameEngine.exe
